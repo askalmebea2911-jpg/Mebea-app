@@ -13,20 +13,18 @@ app.post('/api/telegram', async (req, res) => {
         const { chatId, message } = req.body;
         
         if (!BOT_TOKEN) {
-            console.error('BOT_TOKEN is not set!');
             return res.status(500).json({ error: 'BOT_TOKEN not set' });
         }
         
-        const targetChatId = chatId || ADMIN_ID;
+        const targetId = chatId || ADMIN_ID;
         
         const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: targetChatId, text: message })
+            body: JSON.stringify({ chat_id: targetId, text: message })
         });
         
         const result = await response.json();
-        console.log('Telegram response:', result);
         
         if (result.ok) {
             res.json({ success: true });
@@ -34,9 +32,12 @@ app.post('/api/telegram', async (req, res) => {
             res.json({ success: false, error: result.description });
         }
     } catch (error) {
-        console.error('Telegram error:', error);
         res.status(500).json({ error: error.message });
     }
+});
+
+app.get('/api/config', (req, res) => {
+    res.json({ adminId: ADMIN_ID });
 });
 
 app.get('/', (req, res) => {
@@ -46,6 +47,4 @@ app.get('/', (req, res) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`✅ Server running on port ${port}`);
-    console.log(`BOT_TOKEN is ${BOT_TOKEN ? 'SET' : 'NOT SET'}`);
-    console.log(`ADMIN_ID is ${ADMIN_ID ? 'SET' : 'NOT SET'}`);
 });
