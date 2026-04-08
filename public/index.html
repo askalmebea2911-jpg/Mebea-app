@@ -87,8 +87,9 @@
     <div id="loginPage" class="card hidden">
         <h2 id="loginTitle">🔐 ግቤት / ምዝገባ</h2>
         <input type="tel" id="regPhone" placeholder="📞 ስልክ ቁጥር (09xxxxxxxx)">
-        <input type="password" id="regPassword" placeholder="🔒 ሚስጥር ቁጥር (አማራጭ)">
-        <button id="loginBtn">🔐 ግባ / ተመዝገብ</button>
+        <input type="password" id="regPassword" placeholder="🔒 ሚስጥር ቁጥር">
+        <button id="loginBtn">🔐 ግባ</button>
+        <button id="registerBtn">📝 ተመዝገብ</button>
         <button id="skipBtn">⏭️ ያለ ምዝገባ ቀጥል</button>
     </div>
 
@@ -262,7 +263,19 @@
             receiptImage: "🖼️ የክፍያ ደረሰኝ ምስል", receiptNumber: "🧾 የክፍያ ደረሰኝ ቁጥር",
             imageOption: "🖼️ ምስል", numberOption: "🔢 ቁጥር",
             copySuccess: "✅ ሊንክ ተቀድቷል!",
-            paymentTitle: "💳 ክፍያ ማድረጊያ", telebirrLabel: "ቴሌ ብር", bankLabel: "ንግድ ባንክ", paymentWarning: "⚠️ ክፍያ ከፈጸሙ በኋላ ማስረጃዎን ይስቀሉ"
+            paymentTitle: "💳 ክፍያ ማድረጊያ", telebirrLabel: "ቴሌ ብር", bankLabel: "ንግድ ባንክ", paymentWarning: "⚠️ ክፍያ ከፈጸሙ በኋላ ማስረጃዎን ይስቀሉ",
+            phonePlaceholder: "📞 ስልክ ቁጥር (09xxxxxxxx)",
+            passwordPlaceholder: "🔒 ሚስጥር ቁጥር",
+            fullNamePlaceholder: "👤 ሙሉ ስም",
+            searchPhonePlaceholder: "📞 ስልክ ቁጥር",
+            receiptNumberPlaceholder: "🧾 የክፍያ ደረሰኝ ቁጥር",
+            loginBtn: "🔐 ግባ",
+            registerBtn: "📝 ተመዝገብ",
+            skipBtn: "⏭️ ያለ ምዝገባ ቀጥል",
+            registerSuccess: "በደህና ተመዝግበዋል!",
+            phoneExists: "ይህ ስልክ ቁጥር አስቀድሞ ተመዝግቧል!",
+            loginFailed: "ስልክ ቁጥር ወይም ሚስጥር ቁጥር ትክክል አይደለም!",
+            welcomeBack: "እንኳን ደህና መጡ!"
         },
         en: {
             langTitle: "🌍 Choose Language", loginTitle: "🔐 Login / Register", title: "🎰 Mebea Lottery",
@@ -292,7 +305,19 @@
             receiptImage: "🖼️ Receipt Image", receiptNumber: "🧾 Receipt Number",
             imageOption: "🖼️ Image", numberOption: "🔢 Number",
             copySuccess: "✅ Link copied!",
-            paymentTitle: "💳 Payment Methods", telebirrLabel: "Telebirr", bankLabel: "Commercial Bank", paymentWarning: "⚠️ After payment, upload your receipt here"
+            paymentTitle: "💳 Payment Methods", telebirrLabel: "Telebirr", bankLabel: "Commercial Bank", paymentWarning: "⚠️ After payment, upload your receipt here",
+            phonePlaceholder: "📞 Phone number (09xxxxxxxx)",
+            passwordPlaceholder: "🔒 Password",
+            fullNamePlaceholder: "👤 Full name",
+            searchPhonePlaceholder: "📞 Phone number",
+            receiptNumberPlaceholder: "🧾 Receipt number",
+            loginBtn: "🔐 Login",
+            registerBtn: "📝 Register",
+            skipBtn: "⏭️ Continue without login",
+            registerSuccess: "Registration successful!",
+            phoneExists: "This phone number is already registered!",
+            loginFailed: "Invalid phone number or password!",
+            welcomeBack: "Welcome back!"
         },
         ti: {
             langTitle: "🌍 ቋንቋ ምረጹ", loginTitle: "🔐 ምዝገባ / ብጹሕ", title: "🎰 መብኣ ሎተሪ",
@@ -322,7 +347,19 @@
             receiptImage: "🖼️ ምስሊ ደረሰኝ", receiptNumber: "🧾 ቁጽሪ ደረሰኝ",
             imageOption: "🖼️ ምስሊ", numberOption: "🔢 ቁጽሪ",
             copySuccess: "✅ ሊንክ ተቀዲሑ!",
-            paymentTitle: "💳 ክፍሊት ምግባሪ", telebirrLabel: "ቴሌ ብር", bankLabel: "ንግድ ባንክ", paymentWarning: "⚠️ ክፍሊት ከፈጸምካ ድሕሪኡ ማስረጻኻ ኣስፍር"
+            paymentTitle: "💳 ክፍሊት ምግባሪ", telebirrLabel: "ቴሌ ብር", bankLabel: "ንግድ ባንክ", paymentWarning: "⚠️ ክፍሊት ከፈጸምካ ድሕሪኡ ማስረጻኻ ኣስፍር",
+            phonePlaceholder: "📞 ቁጽሪ ተሌፎን (09xxxxxxxx)",
+            passwordPlaceholder: "🔒 ሚስጥር ቃል",
+            fullNamePlaceholder: "👤 ምሉእ ስም",
+            searchPhonePlaceholder: "📞 ቁጽሪ ተሌፎን",
+            receiptNumberPlaceholder: "🧾 ቁጽሪ ደረሰኝ",
+            loginBtn: "🔐 ብጹሕ",
+            registerBtn: "📝 ተመዝገብ",
+            skipBtn: "⏭️ ያለ ምዝገባ ቀጥል",
+            registerSuccess: "ብደሓን ተመዝገብካ!",
+            phoneExists: "እዚ ቁጽሪ ተሌፎን ቀደም እውን ተመዝጊቡ ኣሎ!",
+            loginFailed: "ቁጽሪ ተሌፎን ወይ ሚስጥር ቃል ጌጋ እዩ!",
+            welcomeBack: "እንቋዕ ብደሓን መጻእካ!"
         },
         om: {
             langTitle: "🌍 Afaan Barbaad", loginTitle: "🔐 Seensa / Galmee", title: "🎰 Mebea Lootirii",
@@ -352,7 +389,19 @@
             receiptImage: "🖼️ Fotto rasiitii", receiptNumber: "🧾 Lakkoofsa rasiitii",
             imageOption: "🖼️ Fotto", numberOption: "🔢 Lakkoofsa",
             copySuccess: "✅ Liinkiin barreeffame!",
-            paymentTitle: "💳 Haala Kaffaltii", telebirrLabel: "Telebirr", bankLabel: "Baankii Komershaalaa", paymentWarning: "⚠️ Kaffaltii erga galchee booda ragaa keessan kaa'aa"
+            paymentTitle: "💳 Haala Kaffaltii", telebirrLabel: "Telebirr", bankLabel: "Baankii Komershaalaa", paymentWarning: "⚠️ Kaffaltii erga galchee booda ragaa keessan kaa'aa",
+            phonePlaceholder: "📞 Lakkoofsa bilbilaa (09xxxxxxxx)",
+            passwordPlaceholder: "🔒 Jecha icciitii",
+            fullNamePlaceholder: "👤 Maqaa guutuu",
+            searchPhonePlaceholder: "📞 Lakkoofsa bilbilaa",
+            receiptNumberPlaceholder: "🧾 Lakkoofsa rasiitii",
+            loginBtn: "🔐 Seensi",
+            registerBtn: "📝 Galmaa'i",
+            skipBtn: "⏭️ Yoo hin galmeen itti fufi",
+            registerSuccess: "Galmeessituu milkaa'e!",
+            phoneExists: "Lakkoofsi bilbilaa kun duraan galmeeffameera!",
+            loginFailed: "Lakkoofsi bilbilaa ykn jechi icciitii dogoggorsa!",
+            welcomeBack: "Ani si duraan beeka!"
         }
     };
     
@@ -386,14 +435,15 @@
         document.getElementById('selectedLabel').innerHTML = t.selected;
         document.getElementById('priceLabel').innerHTML = t.price;
         document.getElementById('birrLabel').innerText = t.birr;
-        document.getElementById('fullName').placeholder = t.fillName;
-        document.getElementById('phone').placeholder = t.fillPhone;
-        document.getElementById('searchPhone').placeholder = t.fillPhone;
-        document.getElementById('regPhone').placeholder = t.fillPhone;
-        document.getElementById('regPassword').placeholder = "🔒 " + t.fillPhone;
-        document.getElementById('receiptNumber').placeholder = t.receiptNumber;
+        document.getElementById('fullName').placeholder = t.fullNamePlaceholder;
+        document.getElementById('phone').placeholder = t.phonePlaceholder;
+        document.getElementById('searchPhone').placeholder = t.searchPhonePlaceholder;
+        document.getElementById('regPhone').placeholder = t.phonePlaceholder;
+        document.getElementById('regPassword').placeholder = t.passwordPlaceholder;
+        document.getElementById('receiptNumber').placeholder = t.receiptNumberPlaceholder;
         document.getElementById('searchBtn').innerHTML = t.searchBtn;
         document.getElementById('loginBtn').innerHTML = t.loginBtn;
+        document.getElementById('registerBtn').innerHTML = t.registerBtn;
         document.getElementById('skipBtn').innerHTML = t.skipBtn;
         document.getElementById('shareTelegramBtn').innerHTML = t.shareTelegram;
         document.getElementById('copyLinkBtn').innerHTML = t.copyLink;
@@ -530,6 +580,74 @@
             selectedNumbers.push(num);
         } else selectedNumbers.splice(idx, 1);
         renderNumbers();
+    }
+    
+    // ============ የምዝገባ እና ግቤት ተግባራት ============
+    function registerUser() {
+        const phone = document.getElementById('regPhone').value.trim();
+        const password = document.getElementById('regPassword').value.trim();
+        
+        if(!phone || !phone.match(/^09[0-9]{8}$/)) {
+            showMessage(t.fillPhone, true);
+            return;
+        }
+        if(!password) {
+            showMessage(t.passwordPlaceholder + " ያስፈልጋል", true);
+            return;
+        }
+        
+        const users = JSON.parse(localStorage.getItem('lottery_users') || '{}');
+        if(users[phone]) {
+            showMessage(t.phoneExists, true);
+            return;
+        }
+        
+        users[phone] = { password, name: "", totalSpent: 0, registeredAt: new Date().toISOString() };
+        localStorage.setItem('lottery_users', JSON.stringify(users));
+        
+        currentUser.phone = phone;
+        currentUser.totalSpent = 0;
+        showMessage(t.registerSuccess);
+        
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        renderNumbers();
+        updatePageLink();
+    }
+    
+    function loginUser() {
+        const phone = document.getElementById('regPhone').value.trim();
+        const password = document.getElementById('regPassword').value.trim();
+        
+        if(!phone || !phone.match(/^09[0-9]{8}$/)) {
+            showMessage(t.fillPhone, true);
+            return;
+        }
+        
+        const users = JSON.parse(localStorage.getItem('lottery_users') || '{}');
+        const user = users[phone];
+        
+        if(!user || (password && user.password !== password)) {
+            showMessage(t.loginFailed, true);
+            return;
+        }
+        
+        currentUser.phone = phone;
+        currentUser.totalSpent = user.totalSpent || 0;
+        showMessage(t.welcomeBack);
+        
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        renderNumbers();
+        updatePageLink();
+        
+        const levelDiv = document.getElementById('userLevelDisplay');
+        levelDiv.classList.remove('hidden');
+        let levelName = t.bronze;
+        if(currentUser.totalSpent >= 50000) levelName = t.platinum;
+        else if(currentUser.totalSpent >= 20000) levelName = t.gold;
+        else if(currentUser.totalSpent >= 5000) levelName = t.silver;
+        levelDiv.innerHTML = `${t.userLevel}: <strong>${levelName}</strong> | ${t.totalSpent}: ${currentUser.totalSpent} ${t.birr}`;
     }
     
     document.getElementById('submitBtn').onclick = async () => {
@@ -788,6 +906,13 @@
         }
         
         currentUser.totalSpent += pending.total;
+        
+        const users = JSON.parse(localStorage.getItem('lottery_users') || '{}');
+        if(users[currentUser.phone]) {
+            users[currentUser.phone].totalSpent = currentUser.totalSpent;
+            localStorage.setItem('lottery_users', JSON.stringify(users));
+        }
+        
         pendingReceipts = pendingReceipts.filter(p => p.id !== id);
         
         showMessage(`${t.confirmed}: ${pending.name} - 🧾 ${receiptNumber}`);
@@ -910,23 +1035,8 @@
         });
     };
     
-    document.getElementById('loginBtn').onclick = () => {
-        const phone = document.getElementById('regPhone').value.trim();
-        if(phone && phone.match(/^09[0-9]{8}$/)) {
-            currentUser.phone = phone;
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('mainApp').classList.remove('hidden');
-            renderNumbers();
-            updatePageLink();
-            const levelDiv = document.getElementById('userLevelDisplay');
-            levelDiv.classList.remove('hidden');
-            let levelName = t.bronze;
-            if(currentUser.totalSpent >= 50000) levelName = t.platinum;
-            else if(currentUser.totalSpent >= 20000) levelName = t.gold;
-            else if(currentUser.totalSpent >= 5000) levelName = t.silver;
-            levelDiv.innerHTML = `${t.userLevel}: <strong>${levelName}</strong> | ${t.totalSpent}: ${currentUser.totalSpent} ${t.birr}`;
-        } else showMessage(t.fillPhone, true);
-    };
+    document.getElementById('loginBtn').onclick = loginUser;
+    document.getElementById('registerBtn').onclick = registerUser;
     
     document.getElementById('skipBtn').onclick = () => {
         document.getElementById('loginPage').classList.add('hidden');
