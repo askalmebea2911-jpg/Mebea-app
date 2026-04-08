@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>መብኣ ሎተሪ - ዘመናዊ ስርዓት</title>
+    <title>መብኣ ሎተሪ</title>
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -11,136 +11,70 @@
     
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        
-        /* ዘመናዊ ግራዲየንት ጀርባ */
-        body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);background-attachment:fixed;min-height:100vh;padding:20px}
-        body.dark{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)}
-        body.dark .card{background:rgba(30,30,46,.95);color:#fff;border:1px solid rgba(255,255,255,.1)}
-        body.dark .number.available{background:linear-gradient(145deg,#2d2d44,#1a1a2e);color:#fff}
-        body.dark .stat-card{background:#1f2937;color:#fff}
-        body.dark .pending-card{background:#1f2937;color:#fff;border-color:#374151}
-        
+        body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:20px}
+        body.dark{background:linear-gradient(135deg,#1a1a2e,#16213e)}
+        body.dark .card{background:rgba(30,30,46,.95);color:#fff}
         .container{max-width:700px;margin:0 auto}
-        
-        /* ዘመናዊ ካርድ ዲዛይን */
-        .card{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:32px;padding:24px;margin-bottom:20px;box-shadow:0 25px 45px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.3);transition:transform .3s,box-shadow .3s}
-        .card:hover{transform:translateY(-5px);box-shadow:0 35px 55px rgba(0,0,0,.25)}
-        
-        /* አኒሜሽን ለገጽ ክፈቻ */
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        .card{animation:fadeInUp .5s ease-out}
-        
+        .card{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:32px;padding:24px;margin-bottom:20px;box-shadow:0 25px 45px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.3)}
         h1{text-align:center;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.8rem;margin-bottom:15px}
-        
-        /* ዘመናዊ ቋንቋ ቁልፎች */
         .lang-buttons{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
-        .lang-btn{padding:10px 20px;background:#e5e7eb;border:none;border-radius:30px;font-weight:bold;cursor:pointer;transition:all .3s}
-        .lang-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,.2)}
+        .lang-btn{padding:10px 20px;background:#e5e7eb;border:none;border-radius:30px;font-weight:bold;cursor:pointer}
         .lang-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
-        
-        /* የክፍያ መረጃ */
-        .payment-info{background:linear-gradient(135deg,#fef3c7,#fde68a);padding:14px;border-radius:20px;margin-bottom:15px;text-align:center;font-weight:bold;border:1px solid #f59e0b;transition:all .3s}
-        .payment-info:hover{transform:scale(1.01)}
-        
-        /* የሰዓት ማሳያ */
-        .eth-time{text-align:center;font-size:24px;font-weight:bold;color:#f59e0b;margin-bottom:20px;padding:10px;background:#1f2937;border-radius:20px;font-family:monospace;letter-spacing:2px;box-shadow:inset 0 2px 5px rgba(0,0,0,.1),0 2px 5px rgba(0,0,0,.05)}
-        
-        /* የሌሊት ሞድ ቁልፍ */
-        .dark-mode-btn{position:fixed;bottom:20px;left:20px;width:50px;height:50px;background:#1f2937;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;z-index:1000;transition:all .3s;box-shadow:0 5px 15px rgba(0,0,0,.2)}
-        .dark-mode-btn:hover{transform:scale(1.1)}
-        
-        /* የአስተዳዳሪ መግቢያ ቁልፍ */
-        .secret-admin-btn{position:fixed;bottom:20px;right:20px;width:50px;height:50px;background:#f59e0b;border-radius:50%;cursor:pointer;z-index:1000;transition:all .3s;box-shadow:0 5px 15px rgba(0,0,0,.2)}
-        .secret-admin-btn:hover{transform:scale(1.1)}
-        
+        .payment-info{background:linear-gradient(135deg,#fef3c7,#fde68a);padding:14px;border-radius:20px;margin-bottom:15px;text-align:center;font-weight:bold;border:1px solid #f59e0b}
+        .eth-time{text-align:center;font-size:24px;font-weight:bold;color:#f59e0b;margin-bottom:20px;padding:10px;background:#1f2937;border-radius:20px;font-family:monospace}
+        .dark-mode-btn{position:fixed;bottom:20px;left:20px;width:50px;height:50px;background:#1f2937;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;z-index:1000}
+        .secret-admin-btn{position:fixed;bottom:20px;right:20px;width:50px;height:50px;background:#f59e0b;border-radius:50%;cursor:pointer;z-index:1000}
         .hidden{display:none}
-        
-        /* ፍለጋ ሳጥን */
         .search-box{display:flex;gap:10px;margin:15px 0}
-        .search-box input{flex:3;padding:12px;border:2px solid #e5e7eb;border-radius:20px;transition:all .3s}
-        .search-box input:focus{border-color:#667eea;outline:none;box-shadow:0 0 0 3px rgba(102,126,234,.2)}
+        .search-box input{flex:3;padding:12px;border:2px solid #e5e7eb;border-radius:20px}
         .search-box button{flex:1;margin:0}
-        
-        .search-result{margin-top:10px;padding:10px;border-radius:12px;text-align:center;animation:fadeInUp .3s}
+        .search-result{margin-top:10px;padding:10px;border-radius:12px;text-align:center}
         .search-result.success{background:#d1fae5;color:#065f46}
         .search-result.error{background:#fee2e2;color:#991b1b}
-        
-        /* ታብ ቁልፎች */
         .tab-buttons{display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap}
-        .tab-btn{flex:1;padding:12px;background:#e5e7eb;border:none;border-radius:20px;font-size:14px;font-weight:bold;cursor:pointer;transition:all .3s}
-        .tab-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;transform:translateY(-2px);box-shadow:0 5px 15px rgba(102,126,234,.4)}
-        
-        /* ምድብ ቁልፎች */
+        .tab-btn{flex:1;padding:12px;background:#e5e7eb;border:none;border-radius:20px;font-size:14px;font-weight:bold;cursor:pointer}
+        .tab-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;transform:translateY(-2px)}
         .category-buttons{display:flex;gap:8px;margin:15px 0;flex-wrap:wrap}
-        .cat-btn{flex:1;padding:12px;background:#e5e7eb;border:none;border-radius:20px;font-size:13px;font-weight:bold;cursor:pointer;transition:all .3s}
+        .cat-btn{flex:1;padding:12px;background:#e5e7eb;border:none;border-radius:20px;font-size:13px;font-weight:bold;cursor:pointer}
         .cat-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
-        
-        /* ቁጥሮች መያዣ */
-        .numbers-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:20px 0;max-height:400px;overflow-y:auto;padding:5px}
-        
-        /* ዘመናዊ ቁጥር ካርዶች - ኒውሞርፊዝም */
+        .numbers-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:20px 0;max-height:400px;overflow-y:auto}
         .number{border-radius:16px;padding:14px;text-align:center;font-weight:bold;cursor:pointer;transition:all .3s}
         .number.available{background:linear-gradient(145deg,#fff,#f0f0f0);color:#333;box-shadow:5px 5px 10px #d9d9d9,-5px -5px 10px #fff}
         .number.pending{background:linear-gradient(145deg,#fef3c7,#fde68a);color:#92400e;border-left:4px solid #f59e0b}
         .number.taken{background:linear-gradient(145deg,#fee2e2,#fecaca);color:#991b1b;border-left:4px solid #ef4444;cursor:not-allowed}
-        .number.selected{background:#10b981;color:#fff;transform:scale(1.05);box-shadow:0 10px 20px rgba(16,185,129,.3)}
-        .number.available:hover{transform:translateY(-5px) scale(1.05);box-shadow:0 15px 30px rgba(102,126,234,.3)}
-        
-        /* አኒሜሽን ለተመረጡ ቁጥሮች */
-        @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
-        .number.selected{animation:pulse .3s ease}
-        
+        .number.selected{background:#10b981;color:#fff;transform:scale(1.05)}
         .payment-method{display:flex;gap:15px;margin:15px 0;padding:10px;background:#f3f4f6;border-radius:16px}
-        .payment-method label{flex:1;text-align:center;padding:10px;border-radius:12px;cursor:pointer;transition:all .3s}
+        .payment-method label{flex:1;text-align:center;padding:10px;border-radius:12px;cursor:pointer}
         .payment-method label.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
-        
-        input,button{width:100%;padding:14px;margin:10px 0;border:2px solid #e5e7eb;border-radius:20px;font-size:16px;transition:all .3s}
-        input:focus{border-color:#667eea;outline:none;box-shadow:0 0 0 3px rgba(102,126,234,.2)}
+        input,button{width:100%;padding:14px;margin:10px 0;border:2px solid #e5e7eb;border-radius:20px;font-size:16px}
+        input:focus{border-color:#667eea;outline:none}
         button{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;font-weight:bold;cursor:pointer}
-        button:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(102,126,234,.4)}
-        
+        button:hover{transform:translateY(-2px)}
         .stats-bar{background:#e5e7eb;border-radius:30px;height:24px;margin:15px 0;overflow:hidden}
-        .stats-fill{background:linear-gradient(90deg,#10b981,#34d399);height:100%;width:0%;transition:width .8s;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:bold}
-        
-        .selected-info{background:linear-gradient(135deg,#d1fae5,#a7f3d0);padding:15px;border-radius:20px;margin:15px 0;border-left:5px solid #10b981;animation:fadeInUp .3s}
-        
+        .stats-fill{background:linear-gradient(90deg,#10b981,#34d399);height:100%;width:0%;transition:width .8s;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px}
+        .selected-info{background:linear-gradient(135deg,#d1fae5,#a7f3d0);padding:15px;border-radius:20px;margin:15px 0;border-left:5px solid #10b981}
         .stats-row{display:flex;gap:15px;margin:15px 0;text-align:center}
-        .stat-card{flex:1;background:#f3f4f6;padding:10px;border-radius:16px;transition:all .3s}
-        .stat-card:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,.1)}
+        .stat-card{flex:1;background:#f3f4f6;padding:10px;border-radius:16px}
         .stat-number{font-size:24px;font-weight:bold}
         .stat-label{font-size:12px;color:#6b7280}
-        
-        .winner-card{background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:20px;padding:18px;margin:12px 0;text-align:center;transition:all .3s}
-        .winner-card:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,.1)}
-        
-        .pending-card{border:1px solid #e5e7eb;padding:15px;margin:12px 0;border-radius:20px;background:#fff;transition:all .3s}
-        .pending-card:hover{transform:translateX(5px);box-shadow:0 5px 15px rgba(0,0,0,.1)}
-        
-        .support-section{margin-top:20px;padding:15px;background:linear-gradient(135deg,#0088cc,#0055aa);border-radius:20px;text-align:center;transition:all .3s}
-        .support-section:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(0,0,0,.2)}
+        .winner-card{background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:20px;padding:18px;margin:12px 0;text-align:center}
+        .pending-card{border:1px solid #e5e7eb;padding:15px;margin:12px 0;border-radius:20px;background:#fff}
+        .admin-tab-container{display:flex;gap:10px;margin-bottom:20px}
+        .admin-tab-btn{flex:1;padding:10px;background:#e5e7eb;border:none;border-radius:12px;cursor:pointer}
+        .admin-tab-btn.active{background:#667eea;color:#fff}
+        .support-section{margin-top:20px;padding:15px;background:linear-gradient(135deg,#0088cc,#0055aa);border-radius:20px;text-align:center}
         .support-section textarea{width:100%;padding:12px;border-radius:12px;border:none;margin-bottom:10px}
         .support-section button{background:white;color:#0088cc;margin:0}
-        
-        .admin-tab-container{display:flex;gap:10px;margin-bottom:20px}
-        .admin-tab-btn{flex:1;padding:10px;background:#e5e7eb;border:none;border-radius:12px;cursor:pointer;transition:all .3s}
-        .admin-tab-btn.active{background:#667eea;color:#fff}
-        
-        .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,.95);backdrop-filter:blur(10px);color:#fff;padding:12px 24px;border-radius:50px;z-index:1000;animation:slideUp .3s;box-shadow:0 10px 25px rgba(0,0,0,.2)}
+        .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,.95);backdrop-filter:blur(10px);color:#fff;padding:12px 24px;border-radius:50px;z-index:1000;animation:slideUp .3s}
         @keyframes slideUp{from{transform:translateX(-50%) translateY(100px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
-        
-        /* ስክሮልባር ዘመናዊ */
-        ::-webkit-scrollbar{width:8px}
-        ::-webkit-scrollbar-track{background:#e5e7eb;border-radius:10px}
-        ::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:10px}
-        
         @media (max-width:480px){.card{padding:16px}.number{padding:10px;font-size:14px}.tab-btn,.cat-btn{font-size:12px;padding:10px}}
     </style>
 </head>
 <body>
 
-<!-- ደረጃ 1: ቋንቋ መምረጫ ገጽ -->
+<!-- ደረጃ 1: ቋንቋ መምረጫ ገጽ (4 ቋንቋዎች) -->
 <div id="languagePage" class="card" style="max-width:500px;margin:0 auto">
-    <h2 id="langTitle">🌍 ቋንቋ ይምረጡ / Select Language</h2>
+    <h2 id="langTitle">🌍 ቋንቋ ይምረጡ</h2>
     <div class="lang-buttons">
         <button class="lang-btn" onclick="selectLanguage('am')">🇪🇹 አማርኛ</button>
         <button class="lang-btn" onclick="selectLanguage('en')">🇬🇧 English</button>
@@ -155,7 +89,7 @@
     <input type="tel" id="regPhone" placeholder="📞 ስልክ ቁጥር (09xxxxxxxx)">
     <input type="password" id="regPassword" placeholder="🔒 ሚስጥር ቁጥር (አማራጭ)">
     <button id="loginBtn">🔐 ግባ / ተመዝገብ</button>
-    <button id="skipBtn">⏭️ ቀጥታ ለፍ</button>
+    <button id="skipBtn">⏭️ ያለምዝገባ ቀጥል</button>
 </div>
 
 <!-- ደረጃ 3: ዋናው መተግበሪያ -->
@@ -211,11 +145,17 @@
                 <input type="text" id="fullName" placeholder="👤 ሙሉ ስም">
                 <input type="tel" id="phone" placeholder="📞 ስልክ ቁጥር (09xxxxxxxx)">
                 
+                <!-- የክፍያ ዘዴ - ደረሰኛ ቁጥር እና ምስል -->
                 <div class="payment-method">
-                    <label class="active">🧾 ደረሰኛ ቁጥር</label>
+                    <label onclick="selectPaymentMethod('number')">🧾 ደረሰኛ ቁጥር</label>
+                    <label onclick="selectPaymentMethod('image')">📸 ደረሰኛ ምስል</label>
                 </div>
                 
                 <div id="numberInput"><input type="text" id="receiptNumber" placeholder="🧾 ደረሰኛ ቁጥር ያስገቡ"></div>
+                <div id="imageInput" class="hidden">
+                    <input type="file" id="receiptImage" accept="image/*" capture="environment">
+                    <p style="font-size:12px;margin-top:5px">📸 የደረሰኛ ምስል ያንሱ ወይም ይምረጡ</p>
+                </div>
                 
                 <div id="receiptError" class="hidden" style="color:red;font-size:12px"></div>
                 <button id="submitBtn">🎯 አስገባኝ</button>
@@ -275,14 +215,16 @@
             <h4>⚙️ አዲስ እጣ መጀመሪያ</h4>
             <input type="number" id="newTotal" placeholder="ቁጥሮች ብዛት (100)">
             <input type="number" id="newPrice" placeholder="ዋጋ ብር (20)">
-            <input type="text" id="newPrize1" placeholder="1ኛ ሽልማት">
-            <input type="text" id="newPrize2" placeholder="2ኛ ሽልማት">
-            <input type="text" id="newPrize3" placeholder="3ኛ ሽልማት">
+            <input type="text" id="newPrize1" placeholder="1ኛ ሽልማት (ለምሳሌ 10000 ብር ወይም መኪና)">
+            <input type="text" id="newPrize2" placeholder="2ኛ ሽልማት (ለምሳሌ 5000 ብር)">
+            <input type="text" id="newPrize3" placeholder="3ኛ ሽልማት (ለምሳሌ 2000 ብር)">
+            
             <div style="background:#f3f4f6;padding:15px;border-radius:16px;margin:15px 0">
                 <h4>📅 የእጣ ቀጠሮ (አማራጭ)</h4>
                 <input type="datetime-local" id="raffleSchedule">
                 <p style="font-size:12px;color:#666">ባዶ ቢቀር ወዲያውኑ ይጀመራል</p>
             </div>
+            
             <button onclick="createNewRaffle()">🚀 አዲስ እጣ ጀምር</button>
         </div>
         
@@ -331,47 +273,48 @@
     let currentCategory = 'available';
     let currentLoginCode = null;
     let codeExpiry = null;
+    let selectedPaymentMethod = 'number';
     let currentLang = 'am';
     let salesChartAdmin = null;
     let currentUser = { phone: null, hasPassword: false };
     
-    // ========== የአራቱ ቋንቋዎች ትርጉም ==========
+    // ========== ትርጉሞች (4 ቋንቋዎች) ==========
     const translations = {
-        am: {
-            loginTitle: "🔐 መግቢያ / ምዝገባ", mainTitle: "🎲 መብኣ ሎተሪ",
+        am: { 
+            loginTitle: "🔐 መግቢያ / ምዝገባ", mainTitle: "🎲 መብኣ ሎተሪ", 
             available: "📋 ያልተያዙ", pending: "⏳ ማረጋገጫ እየጠበቁ", taken: "✅ የተያዙ",
             select: "✅ የተመረጡ", price: "💰 ክፍያ", birr: "ብር",
             myNumbers: "🔍 ቁጥሮቼ", history: "📜 ያለፉ እጣዎች", winners: "🏆 አሸናፊዎች",
-            alert1: "📝 እንኳን ደህና መጡ!\n\nለዚህ ሎተሪ መተግበሪያ አዲስ ከሆኑ\nእባክዎ ለመመዝገብ ስልክ ቁጥርዎን እና የራስዎን ሚስጥር ቁጥር ያስገቡ እና ተመዝገብ የሚለውን ቁልፍ ይጫኑ።\n\nይህንን ማድረግ አስገዳጅ ባለመሆኑ ፍላጎት ከሌለዎ ያለምዝገባ ቀጥል የሚለውን ቁልፍ ይጫኑ።",
-            alert2: "🎯 እንኳን ወደ መብኣ ሎተሪ በደህና መጡ!\n\n1️⃣ ክፍያ ወደ ቴሌ ብር ወይም ንግድ ባንክ በመላክ ደረሰኝ ያዘጋጁ (በአንድ ጊዜ የሚቆርጡትን የእጣ ብዛት ድምር በአንድ ላይ ይክፈሉ)\n\n2️⃣ ቁጥር(ዎች) ይምረጡ (በአንድ ጊዜ መምረጥ የሚቻለው 10 እጢዎች ድረስ ብቻ ነው)\n\n3️⃣ ሙሉ ስምዎን ያስገቡ\n\n4️⃣ ደረሰኛ ቁጥር ያስገቡ",
-            alert3: "✅ ደረሰኛዎ ተልኳል!\n\n⏳ አስተዳዳሪው ክፍያዎን እስኪያረጋገጡ ይጠብቁ።\n\n✅ ክፍያዎ ሲረጋገጥ በቴሌግራም ቻናላችን ላይ ይፋ ይደረጋል።\n\n🏆 መልካም ዕድል!"
+            securityAlert: "📝 እንኳን ደህና መጡ!\n\nለዚህ ሎተሪ መተግበሪያ አዲስ ከሆኑ\nእባክዎ ለመመዝገብ ስልክ ቁጥርዎን እና የራስዎን ሚስጥር ቁጥር ያስገቡ እና ተመዝገብ የሚለውን ቁልፍ ይጫኑ።\n\nይህንን ማድረግ አስገዳጅ ባለመሆኑ ፍላጎት ከሌለዎ ያለምዝገባ ቀጥል የሚለውን ቁልፍ ይጫኑ።",
+            instructionAlert: "🎯 እንኳን ወደ መብኣ ሎተሪ በደህና መጡ!\n\n1️⃣ ክፍያ ወደ ቴሌ ብር ወይም ንግድ ባንክ በመላክ ደረሰኝ ያዘጋጁ (በአንድ ጊዜ የሚቆርጡትን የእጣ ብዛት ድምር በአንድ ላይ ይክፈሉ)\n2️⃣ ቁጥር(ዎች) ይምረጡ (በአንድ ጊዜ መምረጥ የሚቻለው 10 እጢዎች ድረስ ብቻ ነው)\n3️⃣ ሙሉ ስምዎን ያስገቡ\n4️⃣ ደረሰኛ ቁጥር (ወይም ምስል) ያስገቡ",
+            afterSubmitAlert: "✅ ደረሰኛዎ ተልኳል!\n\n⏳ አስተዳዳሪው ክፍያዎን እስኪያረጋግጡ ይጠብቁ።\n✅ ክፍያዎ ሲረጋገጥ በቴሌግራም ቻናላችን ላይ ይፋ ይደረጋል።\n🏆 መልካም ዕድል!"
         },
-        en: {
+        en: { 
             loginTitle: "🔐 Login / Register", mainTitle: "🎲 Mebena Lottery",
             available: "📋 Available", pending: "⏳ Pending", taken: "✅ Taken",
             select: "✅ Selected", price: "💰 Payment", birr: "Birr",
             myNumbers: "🔍 My Numbers", history: "📜 History", winners: "🏆 Winners",
-            alert1: "📝 Welcome!\n\nIf you are new to this lottery application,\nPlease enter your phone number and your own secret code, then click the Register button.\n\nIf you don't want to register, click the Continue without registration button.",
-            alert2: "🎯 Welcome to Mebena Lottery!\n\n1️⃣ Prepare receipt by sending payment to TeleBirr or Commercial Bank (Pay the total amount for all tickets at once)\n\n2️⃣ Select number(s) (Maximum 10 tickets at once)\n\n3️⃣ Enter your full name\n\n4️⃣ Enter receipt number",
-            alert3: "✅ Your receipt has been sent!\n\n⏳ Please wait for the admin to verify your payment.\n\n✅ Once verified, it will be announced on our Telegram channel.\n\n🏆 Good luck!"
+            securityAlert: "📝 Welcome!\n\nIf you are new to this lottery app,\nPlease enter your phone number and your secret code to register, then click the Register button.\n\nThis is not mandatory. If you don't want to register, click the Continue without registration button.",
+            instructionAlert: "🎯 Welcome to Mebena Lottery!\n\n1️⃣ Prepare your receipt by sending payment to TeleBirr or Commercial Bank (pay the total amount for all tickets at once)\n2️⃣ Select number(s) (Maximum 10 tickets at a time)\n3️⃣ Enter your full name\n4️⃣ Enter receipt number (or image)",
+            afterSubmitAlert: "✅ Your receipt has been sent!\n\n⏳ Please wait for the admin to verify your payment.\n✅ Once verified, it will be announced on our Telegram channel.\n🏆 Good luck!"
         },
-        om: {
+        om: { 
             loginTitle: "🔐 Seensa / Galmee", mainTitle: "🎲 Mebena Lootirii",
             available: "📋 Hin jire", pending: "⏳ Eeggamaa", taken: "✅ Fudhatame",
             select: "✅ Filatame", price: "💰 Kaffaltii", birr: "Birrii",
             myNumbers: "🔍 Lakkoofsota Koo", history: "📜 Seenaa", winners: "🏆 Mo'attoota",
-            alert1: "📝 Bagaa nagaan dhufte!\n\nYoo haaraa taate,\nMaaloo lakkoofsa bilbilaa fi kooda icciitii keessan galchi, ergasii galmaa'i.\n\nYoo hin barbaadne, utuu hin galmaanin itti fufi.",
-            alert2: "🎯 Bagaa nagaan Mebena Lootiriitti dhufte!\n\n1️⃣ Kaffaltii TeleBirr ykn Baankii Daldalaatti erguun rasiiitii qopheessaa (Walumaa galatti kaffaltii tikkeetii hundaaf tokkumaan kaffalaa)\n\n2️⃣ Lakkoofsa(a) filadhu (Yeroo tokko tikkeetii 10 qofa)\n\n3️⃣ Maqaa guutuu keessan galchaa\n\n4️⃣ Lakkoofsa rasiiitii galchaa",
-            alert3: "✅ Rasiiitiin keessan ergame!\n\n⏳ Kaffaltiin keessan hanga mirkaneefamutti eeggadhaa.\n\n✅ Yeroo mirkaneefamuu chaanaala keenya Telegram irratti beeksifama.\n\n🏆 Carraa gaarii!"
+            securityAlert: "📝 Bagga!\n\nYoo app laayitirii kanaaf haaraa taate,\nMaaloo lakkoofsa bilbilaa keessanii fi lakkoofsa icciitii keessanii galchaa, ergasii Galmeessi jedhu tuqaa.\n\nKun dirqama miti. Yoo hin barbaadne, utuu hin galmeen itti fufi jedhu tuqaa.",
+            instructionAlert: "🎯 Bagga Mebena Lootirii!\n\n1️⃣ Kaffaltii keessan TeleBirr ykn Baankii Daldalaatti erguun rasiiitii qopheessaa (maallaqa lakkoofsota hundaaf walitti dabale ergaa)\n2️⃣ Lakkoofsa(a) filadhu (Yeroo tokko lakkoofsa 10 hanga ta'e)\n3️⃣ Maqaa guutuu keessan galchaa\n4️⃣ Lakkoofsa rasiiitii (ykn suuraa) galchaa",
+            afterSubmitAlert: "✅ Rasiiitii keessan ergame!\n\n⏳ Yeroo admin kaffaltii keessan mirkaneessu eegaa.\n✅ Yeroo mirkaneeffamu, chaanaalii Telegiraamii keenya irrasi beeksifama.\n🏆 Carraa gaarii!"
         },
-        ti: {
+        ti: { 
             loginTitle: "🔐 ምእታው / ምዝገባ", mainTitle: "🎲 መብኣ ሎተሪ",
             available: "📋 ዘይተሓዙ", pending: "⏳ ይጽበ ኣሎ", taken: "✅ ተሓዚዙ",
             select: "✅ ተመሪጹ", price: "💰 ክፍሊት", birr: "ብር",
             myNumbers: "🔍 ቁጽሪታተይ", history: "📜 ታሪኽ", winners: "🏆 ተዓወቲ",
-            alert1: "📝 እንኳዕ ደሓን መጻእኩም!\n\n�ዚ ናይ ሎተሪ መተግበሪያ ሓደስ እንተ ዄንኩም፡\nበጃኹም ቁጽሪ ተሌፎንኩምን ናትኩም ቁጽሪ ምስጢርን ኣእትዉ ድሕሪኡ ተመዝገቡ ዝብል ቁልፊ ጠውቑ።\n\nእዚ ምግባር ከም ግድ ስለ ዘይኮነ፡ እንተ ዘየድልየኩም ብዘይ ምዝገባ ቀጽሉ ዝብል ቁልፊ ጠውቑ።",
-            alert2: "🎯 እንኳዕ ናብ መብኣ ሎተሪ በጽሓኩም!\n\n1️⃣ ክፍሊት ናብ ተሌ ብር ወይ ንግዳዊ ባንክ ብምላእ ደረሰኛ ኣዘጋጁ (ንምሉእ ቲኬታት ድምር ክፍሊት ብሓንሳእ ክፈሉ)\n\n2️⃣ ቁጽሪ(ታት) ምረጹ (ኣብ ሓደ ግዜ ክትሓርዩ እትኽእሉ 10 ቲኬታት ጥራሕ)\n\n3️⃣ ሙሉ ስምኩም ኣእትዉ\n\n4️⃣ ቁጽሪ ደረሰኛ ኣእትዉ",
-            alert3: "✅ ደረሰኛኩም ተላኢኩ!\n\n⏳ ክፍሊትኩም ክሳብ ምርግጋጹ ጽበዉ።\n\n✅ ምስ ተረጋገጸ ኣብ ቻናል ቴሌግራምና ይግለጽ።\n\n🏆 ጽቡቕ ዕድል!"
+            securityAlert: "📝 እንቋዕ ብደሓን መጻእኩም!\n\nንዚ ኣፕሊኬሽን ሎተሪ ሓደስ እንተደኣ ኮይኑም፣\nበጃኹም ንምዝገባ ቁጽሪ ተሌፎንኩምን ቁጽሪ ምስጢርኩምን ኣእትዉ ድሕሪኡ ተመዝገብ ዝብል ቁልፊ ጠውቑ።\n\n�ዚ ኣድላዪ ኣይኮነን። እንተዘየደልየኩም፣ ብዘይ ምዝገባ ቀጥል ዝብል ቁልፊ ጠውቑ።",
+            instructionAlert: "🎯 እንቋዕ ናብ መብኣ ሎተሪ ብደሓን መጻእኩም!\n\n1️⃣ ንክፍሊት ናብ ቴሌ ብር ወይ ባንክ ንግዲ ብምላእ ደረሰኛ ኣዘጋጁ (ንምርጫ እትወስንዎ ቁጽሪ እጣታት ብሓንሳብ ክፈሉ)\n2️⃣ ቁጽሪ(ታት) ምረጹ (ብሓንሳብ ክትመርጡዎ ክትክእሉ 10 እጣታት ጥራሕ እዩ)\n3️⃣ ምሉእ ስምኩም ኣእትዉ\n4️⃣ ቁጽሪ ደረሰኛ (ወይ ምስሊ) ኣእትዉ",
+            afterSubmitAlert: "✅ ደረሰኛኹም ተልኢኹ!\n\n⏳ ክሳብ ኣስተዳዳሪ ክፍሊትኩም ክረጋግጽ ጽበዉ።\n✅ ምስ ተረጋገጸ፣ ኣብ ቻናል ተለግራምና ይግለጽ።\n🏆 ጽቡቕ ዕድል!"
         }
     };
     
@@ -393,25 +336,15 @@
         document.getElementById('supportMessage').value = '';
     }
     
-    // ========== የእጣ ቀጠሮ ==========
-    async function scheduleRaffle() {
-        const scheduleTime = document.getElementById('raffleSchedule').value;
-        if(!scheduleTime) return;
-        currentRaffle.scheduledTime = scheduleTime;
-        currentRaffle.drawType = 'scheduled';
-        await db.collection('raffles').doc('current').set(currentRaffle);
-        await sendTelegram(ADMIN_CHAT_ID, `📅 እጣ ቀጠሮ ተይዟል: ${new Date(scheduleTime).toLocaleString()}`);
-    }
-    
     // ========== ሽልማት አውሮፕላን ==========
     function showPrizeInfo() {
         const prizeInfo = document.createElement('div');
         prizeInfo.style.cssText = 'background:#fef3c7;padding:12px;border-radius:12px;margin:10px 0;text-align:center';
         prizeInfo.innerHTML = `
             <strong>🏆 ሽልማት አውሮፕላን 🏆</strong><br>
-            🥇 1ኛ ደረጃ: ${currentRaffle?.prize1 || '10000 ብር'}<br>
-            🥈 2ኛ ደረጃ: ${currentRaffle?.prize2 || '5000 ብር'}<br>
-            🥉 3ኛ ደረጃ: ${currentRaffle?.prize3 || '2000 ብር'}<br>
+            🥇 1ኛ ደረጃ: ${currentRaffle?.prize1 || 10000} ብር<br>
+            🥈 2ኛ ደረጃ: ${currentRaffle?.prize2 || 5000} ብር<br>
+            🥉 3ኛ ደረጃ: ${currentRaffle?.prize3 || 2000} ብር<br>
             <small>አሸናፊዎች ሽልማታቸውን በቴሌብር ይቀበላሉ</small>
         `;
         const existing = document.querySelector('.prize-info');
@@ -421,13 +354,28 @@
         setTimeout(() => prizeInfo.remove(), 5000);
     }
     
+    // ========== የክፍያ ዘዴ መምረጫ ==========
+    function selectPaymentMethod(method) {
+        selectedPaymentMethod = method;
+        document.querySelectorAll('.payment-method label').forEach(l => l.classList.remove('active'));
+        if(method === 'number') {
+            document.querySelectorAll('.payment-method label')[0].classList.add('active');
+            document.getElementById('numberInput').classList.remove('hidden');
+            document.getElementById('imageInput').classList.add('hidden');
+        } else {
+            document.querySelectorAll('.payment-method label')[1].classList.add('active');
+            document.getElementById('numberInput').classList.add('hidden');
+            document.getElementById('imageInput').classList.remove('hidden');
+        }
+    }
+    
     // ========== ደረጃ 1: ቋንቋ መምረጥ ==========
     function selectLanguage(lang) {
         currentLang = lang;
         localStorage.setItem('language', lang);
         
-        // የደህንነት አለርት በተመረጠው ቋንቋ
-        alert(translations[lang].alert1);
+        // አለርት 1: የምዝገባ ማብራሪያ በተመረጠው ቋንቋ
+        alert(translations[lang].securityAlert);
         
         // የገጹን ጽሁፎች ቀይር
         const t = translations[lang];
@@ -448,10 +396,10 @@
         document.getElementById('loginPage').classList.remove('hidden');
     }
     
-    // ========== የኢትዮጵያ ሰዓት (UTC+3) ==========
+    // ========== የኢትዮጵያ ሰዓት (UTC+6 - 3 ሰአት ጨምር) ==========
     function getEthiopiaTime() {
         const now = new Date();
-        return new Date(now.getTime() + (3 * 60 * 60 * 1000));
+        return new Date(now.getTime() + (6 * 60 * 60 * 1000));
     }
     function formatEthiopiaTime(date) {
         let hours = date.getHours(), minutes = date.getMinutes(), seconds = date.getSeconds();
@@ -479,6 +427,24 @@
                 body: JSON.stringify({ chat_id: chatId, text: message })
             });
         } catch(e) { console.log("Telegram error:", e); }
+    }
+    
+    async function sendPhotoToBot(photoFile, caption) {
+        try {
+            const formData = new FormData();
+            formData.append('chat_id', ADMIN_CHAT_ID);
+            formData.append('photo', photoFile);
+            if(caption) formData.append('caption', caption);
+            const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            return result;
+        } catch(e) {
+            console.log("Telegram photo error:", e);
+            return { ok: false };
+        }
     }
     
     async function sendToChannel(message) {
@@ -577,7 +543,7 @@
     async function createDefaultRaffle() {
         const defaultRaffle = {
             id: Date.now(), totalNumbers: 100, pricePerTicket: 20, prize1: "10000 ብር", prize2: "5000 ብር", prize3: "2000 ብር",
-            numbers: Array(100).fill().map((_, i) => ({ number: i+1, status: 'available', user: null, phone: null, receipt: null })),
+            numbers: Array(100).fill().map((_, i) => ({ number: i+1, status: 'available', user: null, phone: null, receipt: null, imageUrl: null })),
             status: 'active', startTime: new Date().toISOString()
         };
         await db.collection('raffles').doc('current').set(defaultRaffle);
@@ -678,8 +644,8 @@
         
         document.getElementById('loginPage').classList.add('hidden');
         
-        // አለርት 2 - የመመሪያ አለርት
-        alert(translations[currentLang].alert2);
+        // አለርት 2: የእጣ አመራረጥ እና ግዥ ሂደት ማብራሪያ
+        alert(translations[currentLang].instructionAlert);
         
         document.getElementById('mainApp').classList.remove('hidden');
         
@@ -698,8 +664,8 @@
         currentUser = { phone: null, hasPassword: false };
         document.getElementById('loginPage').classList.add('hidden');
         
-        // አለርት 2 - የመመሪያ አለርት
-        alert(translations[currentLang].alert2);
+        // አለርት 2: የእጣ አመራረጥ እና ግዥ ሂደት ማብራሪያ
+        alert(translations[currentLang].instructionAlert);
         
         document.getElementById('mainApp').classList.remove('hidden');
         document.getElementById('phone').style.display = 'block';
@@ -711,6 +677,7 @@
         const name = document.getElementById('fullName').value.trim();
         let phone = document.getElementById('phone').value.trim();
         const receipt = document.getElementById('receiptNumber').value.trim();
+        const imageFile = document.getElementById('receiptImage').files[0];
         const errorDiv = document.getElementById('receiptError');
         
         if(!name) { alert('ሙሉ ስም ያስገቡ'); return; }
@@ -718,12 +685,17 @@
             if(!phone || !/^09[0-9]{8}$/.test(phone)) { alert('ስልክ ያስገቡ'); return; }
         } else { phone = currentUser.phone; }
         if(selectedNumbers.length === 0) { alert('ቁጥር ይምረጡ'); return; }
-        if(!receipt) { alert('ደረሰኛ ቁጥር ያስገቡ'); return; }
-        if(usedReceipts.includes(receipt)) {
-            errorDiv.classList.remove('hidden');
-            errorDiv.innerText = '❌ ይህ ደረሰኛ ቁጥር ቀድሞ ጥቅም ላይ ውሏል!';
-            setTimeout(() => errorDiv.classList.add('hidden'), 3000);
-            return;
+        
+        if(selectedPaymentMethod === 'number') {
+            if(!receipt) { alert('ደረሰኛ ቁጥር ያስገቡ'); return; }
+            if(usedReceipts.includes(receipt)) {
+                errorDiv.classList.remove('hidden');
+                errorDiv.innerText = '❌ ይህ ደረሰኛ ቁጥር ቀድሞ ጥቅም ላይ ውሏል!';
+                setTimeout(() => errorDiv.classList.add('hidden'), 3000);
+                return;
+            }
+        } else {
+            if(!imageFile) { alert('እባክዎ የደረሰኛ ምስል ያንሱ ወይም ይምረጡ'); return; }
         }
         
         for(let n of selectedNumbers) {
@@ -733,7 +705,14 @@
             }
         }
         
-        const pending = { id: Date.now(), name, phone, numbers: [...selectedNumbers], receipt: receipt, totalAmount: selectedNumbers.length * currentRaffle.pricePerTicket, raffleId: currentRaffle.id, timestamp: new Date().toISOString() };
+        let imageUrl = null;
+        if(imageFile) {
+            const storageRef = storage.ref(`receipts/${Date.now()}_${imageFile.name}`);
+            await storageRef.put(imageFile);
+            imageUrl = await storageRef.getDownloadURL();
+        }
+        
+        const pending = { id: Date.now(), name, phone, numbers: [...selectedNumbers], receipt: receipt || null, imageUrl, totalAmount: selectedNumbers.length * currentRaffle.pricePerTicket, raffleId: currentRaffle.id, timestamp: new Date().toISOString(), paymentMethod: selectedPaymentMethod };
         await db.collection('pendingReceipts').doc(pending.id.toString()).set(pending);
         
         selectedNumbers.forEach(n => {
@@ -742,22 +721,29 @@
                 currentRaffle.numbers[idx].status = 'pending';
                 currentRaffle.numbers[idx].user = name;
                 currentRaffle.numbers[idx].phone = phone;
-                currentRaffle.numbers[idx].receipt = receipt;
+                currentRaffle.numbers[idx].receipt = receipt || null;
+                currentRaffle.numbers[idx].imageUrl = imageUrl;
             }
         });
         await db.collection('raffles').doc('current').set(currentRaffle);
         
-        let telegramMsg = `🆕 አዲስ ክፍያ ጥያቄ!\n👤 ${name}\n📞 ${phone}\n🔢 ${selectedNumbers.join(', ')}\n🧾 ${receipt}`;
+        let telegramMsg = `🆕 አዲስ ክፍያ ጥያቄ!\n👤 ${name}\n📞 ${phone}\n🔢 ${selectedNumbers.join(', ')}`;
+        if(receipt) telegramMsg += `\n🧾 ደረሰኛ: ${receipt}`;
         await sendTelegram(ADMIN_CHAT_ID, telegramMsg);
+        
+        if(imageFile) {
+            await sendPhotoToBot(imageFile, `📸 ደረሰኛ ምስል ለ ${name} - ቁጥሮች: ${selectedNumbers.join(', ')}`);
+        }
         
         playNotificationSound();
         
-        // አለርት 3 - ደረሰኛ ከተላከ በኋላ
-        alert(translations[currentLang].alert3);
+        // አለርት 3: ደረሰኛ ከላኩ በኋላ ማብራሪያ
+        alert(translations[currentLang].afterSubmitAlert);
         
         document.getElementById('fullName').value = '';
         document.getElementById('phone').value = '';
         document.getElementById('receiptNumber').value = '';
+        document.getElementById('receiptImage').value = '';
         selectedNumbers = [];
         renderNumbers();
         updateCategoryCounts();
@@ -776,7 +762,7 @@
         } else {
             html += `<h3>✅ የገዙት ቁጥሮች:</h3>`;
             myNumbers.forEach(n => {
-                html += `<div class="my-number-item"><strong>🔢 ቁጥር: ${n.number}</strong><br>🧾 ደረሰኛ: ${n.receipt}<br>📌 ሁኔታ: ${n.status === 'taken' ? '✅ የተረጋገጠ' : '⏳ ማረጋገጫ እየጠበቀ'}</div>`;
+                html += `<div class="my-number-item"><strong>🔢 ቁጥር: ${n.number}</strong><br>🧾 ደረሰኛ: ${n.receipt || 'ምስል'}<br>📌 ሁኔታ: ${n.status === 'taken' ? '✅ የተረጋገጠ' : '⏳ ማረጋገጫ እየጠበቀ'}</div>`;
             });
         }
         html += `</div>`;
@@ -792,7 +778,7 @@
         }
         let html = '';
         for(let p of pendingReceipts) {
-            html += `<div class="pending-card"><strong>👤 ${p.name}</strong> 📞 ${p.phone}<br>🔢 ቁጥሮች: ${p.numbers.join(', ')}<br>🧾 ደረሰኛ: ${p.receipt}<br>💰 ${p.totalAmount} ብር<br><div style="display:flex;gap:10px;margin-top:10px"><button onclick="confirmPayment(${p.id})" style="background:#10b981">✅ አረጋግጥ</button><button onclick="rejectPayment(${p.id})" style="background:#ef4444">❌ ውድቅ አድርግ</button></div></div>`;
+            html += `<div class="pending-card"><strong>👤 ${p.name}</strong> 📞 ${p.phone}<br>🔢 ቁጥሮች: ${p.numbers.join(', ')}<br>${p.receipt ? `🧾 ደረሰኛ: ${p.receipt}<br>` : ''}${p.imageUrl ? `📸 <a href="${p.imageUrl}" target="_blank">ምስል ይመልከቱ</a><br>` : ''}💰 ${p.totalAmount} ብር<br><div style="display:flex;gap:10px;margin-top:10px"><button onclick="confirmPayment(${p.id})" style="background:#10b981">✅ አረጋግጥ</button><button onclick="rejectPayment(${p.id})" style="background:#ef4444">❌ ውድቅ አድርግ</button></div></div>`;
         }
         container.innerHTML = html;
     }
@@ -838,6 +824,7 @@
                 currentRaffle.numbers[idx].user = null;
                 currentRaffle.numbers[idx].phone = null;
                 currentRaffle.numbers[idx].receipt = null;
+                currentRaffle.numbers[idx].imageUrl = null;
             }
         });
         
@@ -861,275 +848,3 @@
             return;
         }
         const shuffled = [...taken];
-        for(let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        const winners = shuffled.slice(0, 3);
-        const result = { id: Date.now(), raffleId: currentRaffle.id, timestamp: new Date().toISOString(), winners: winners.map((w, i) => ({ place: i + 1, name: w.user, phone: w.phone, number: w.number, prize: i === 0 ? currentRaffle.prize1 : (i === 1 ? currentRaffle.prize2 : currentRaffle.prize3) })) };
-        await db.collection('winners').doc(result.id.toString()).set(result);
-        await db.collection('raffleHistory').doc(currentRaffle.id.toString()).set({ id: currentRaffle.id, timestamp: new Date().toISOString(), totalNumbers: currentRaffle.totalNumbers, soldCount: taken.length, winners: winners.map(w => w.user) });
-        currentRaffle.status = 'completed';
-        await db.collection('raffles').doc('current').set(currentRaffle);
-        
-        let html = '<h3>🏆 አሸናፊዎች 🏆</h3>';
-        let channelMsg = `🏆 የእጣ #${currentRaffle.id} ውጤት!\n\n`;
-        for(let i = 0; i < result.winners.length; i++) {
-            const w = result.winners[i];
-            const icon = i === 0 ? '🥇' : (i === 1 ? '🥈' : '🥉');
-            const name = i === 0 ? '1ኛ' : (i === 1 ? '2ኛ' : '3ኛ');
-            html += `<div class="winner-card"><h3>${icon} ${name} ደረጃ</h3><p>🎉 ${w.name}</p><p>🔢 ቁጥር ${w.number}</p><p>💰 ${w.prize}</p><button onclick="showPrizeInfo()" style="margin-top:10px">🏅 ሽልማት አውሮፕላን</button><button onclick="generateQRCode(${w.number}, '${w.name}')" style="margin-top:5px">📱 QR ኮድ</button></div>`;
-            channelMsg += `${icon} ${name}: ${w.name} (ቁጥር ${w.number}) - ${w.prize}\n`;
-        }
-        document.getElementById('drawResult').innerHTML = html;
-        
-        await sendToChannel(channelMsg);
-        await sendTelegram(ADMIN_CHAT_ID, `🏆 እጣ ተወስኗል!\n${channelMsg}`);
-        
-        playNotificationSound();
-        alert(channelMsg);
-        
-        if(confirm("አዲስ እጣ መጀመር ይፈልጋሉ?")) {
-            closeAdminPanel();
-            showAdminTab('new');
-        }
-    }
-    
-    async function createNewRaffle() {
-        const total = parseInt(document.getElementById('newTotal').value);
-        const price = parseInt(document.getElementById('newPrice').value);
-        const p1 = document.getElementById('newPrize1').value;
-        const p2 = document.getElementById('newPrize2').value;
-        const p3 = document.getElementById('newPrize3').value;
-        const scheduleTime = document.getElementById('raffleSchedule').value;
-        
-        if(!total || !price || !p1 || !p2 || !p3) {
-            alert('ሁሉንም መረጃ ይሙሉ');
-            return;
-        }
-        
-        const newRaffle = {
-            id: Date.now(), totalNumbers: total, pricePerTicket: price, prize1: p1, prize2: p2, prize3: p3,
-            numbers: Array(total).fill().map((_, i) => ({ number: i+1, status: 'available', user: null, phone: null, receipt: null })),
-            status: 'active', startTime: new Date().toISOString(),
-            scheduledTime: scheduleTime || null,
-            drawType: scheduleTime ? 'scheduled' : 'manual'
-        };
-        
-        await db.collection('raffles').doc('current').set(newRaffle);
-        selectedNumbers = [];
-        
-        let msg = `🚀 አዲስ እጣ ተጀምሯል!\n🔢 1-${total}\n💰 ${price} ብር\n🏆 1ኛ: ${p1} | 2ኛ: ${p2} | 3ኛ: ${p3}`;
-        if(scheduleTime) msg += `\n📅 ቀጠሮ: ${new Date(scheduleTime).toLocaleString()}`;
-        
-        await sendTelegram(ADMIN_CHAT_ID, msg);
-        await sendToChannel(msg);
-        
-        playNotificationSound();
-        alert('✅ አዲስ እጣ ተጀምሯል');
-        
-        document.getElementById('newTotal').value = '';
-        document.getElementById('newPrice').value = '';
-        document.getElementById('newPrize1').value = '';
-        document.getElementById('newPrize2').value = '';
-        document.getElementById('newPrize3').value = '';
-        document.getElementById('raffleSchedule').value = '';
-        closeAdminPanel();
-        updateCategoryCounts();
-        updateSalesChartAdmin();
-    }
-    
-    function renderAdminStats() {
-        if(!currentRaffle) return;
-        const taken = currentRaffle.numbers.filter(n => n.status === 'taken').length;
-        const total = currentRaffle.totalNumbers;
-        const revenue = taken * currentRaffle.pricePerTicket;
-        document.getElementById('adminStats').innerHTML = `<div style="background:#f3f4f6;padding:15px;border-radius:16px"><p>✅ የተረጋገጡ: <strong>${taken}/${total}</strong></p><p>💰 ገቢ: <strong>${revenue.toLocaleString()} ብር</strong></p><p>⏳ በመጠባበቅ: <strong>${pendingReceipts.length}</strong></p></div>`;
-    }
-    
-    function updateSalesChartAdmin() {
-        if(!currentRaffle) return;
-        const categories = [];
-        const soldData = [];
-        for(let i = 1; i <= currentRaffle.totalNumbers; i += 100) {
-            let end = Math.min(i + 99, currentRaffle.totalNumbers);
-            categories.push(`${i}-${end}`);
-            const sold = currentRaffle.numbers.filter(n => n.number >= i && n.number <= end && n.status === 'taken').length;
-            soldData.push(sold);
-        }
-        const ctx = document.getElementById('salesChartAdmin').getContext('2d');
-        if(salesChartAdmin) salesChartAdmin.destroy();
-        salesChartAdmin = new Chart(ctx, {
-            type: 'bar',
-            data: { labels: categories, datasets: [{ label: 'የተሸጡ ቁጥሮች', data: soldData, backgroundColor: '#10b981', borderRadius: 8 }] },
-            options: { responsive: true, maintainAspectRatio: true }
-        });
-    }
-    
-    function generateQRCode(number, user) {
-        const qrContainer = document.createElement('div');
-        qrContainer.style.position = 'fixed';
-        qrContainer.style.top = '50%';
-        qrContainer.style.left = '50%';
-        qrContainer.style.transform = 'translate(-50%, -50%)';
-        qrContainer.style.backgroundColor = 'white';
-        qrContainer.style.padding = '20px';
-        qrContainer.style.borderRadius = '20px';
-        qrContainer.style.zIndex = '2000';
-        qrContainer.style.boxShadow = '0 10px 40px rgba(0,0,0,0.3)';
-        qrContainer.innerHTML = `<h3>QR ኮድ ለቁጥር ${number}</h3><div id="qrCode"></div><p>ለ: ${user}</p><button onclick="this.parentElement.remove()">ዝጋ</button>`;
-        document.body.appendChild(qrContainer);
-        new QRCode(document.getElementById("qrCode"), {
-            text: `https://mebea-lottery.com/number/${number}/user/${encodeURIComponent(user)}`,
-            width: 200,
-            height: 200
-        });
-    }
-    
-    function exportJSON() {
-        const data = { currentRaffle, pendingReceipts, allWinners, raffleHistory };
-        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `lottery_export_${new Date().toISOString().split('T')[0]}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-        alert('📥 ውጤት በJSON ተውርዷል');
-    }
-    
-    function exportCSV() {
-        let csvRows = [['ሙሉ ስም', 'ስልክ ቁጥር', 'የተገዙ ቁጥሮች', 'ደረሰኛ', 'ቀን']];
-        currentRaffle.numbers.forEach(n => {
-            if(n.user && n.phone && n.receipt) {
-                csvRows.push([n.user, n.phone, n.number, n.receipt, new Date().toLocaleDateString()]);
-            }
-        });
-        const csvContent = csvRows.map(row => row.join(',')).join('\n');
-        const blob = new Blob(["\uFEFF" + csvContent], {type: 'text/csv;charset=utf-8;'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `participants_${new Date().toISOString().split('T')[0]}.csv`;
-        a.click();
-        URL.revokeObjectURL(url);
-        alert('📊 ውጤት በCSV ተውርዷል');
-    }
-    
-    function renderWinnersList() {
-        const container = document.getElementById('winnersList');
-        if(allWinners.length === 0) {
-            container.innerHTML = '<p>🏆 እስካሁን አሸናፊ የለም</p>';
-            return;
-        }
-        let html = '';
-        for(let w of allWinners.slice(0, 20)) {
-            html += `<div class="winner-card"><h3>🏆 እጣ #${w.raffleId}</h3>`;
-            for(let win of w.winners) html += `<div><strong>${win.place === 1 ? '🥇' : (win.place === 2 ? '🥈' : '🥉')} ${win.name}</strong> - ${win.prize}</div>`;
-            html += `<small>📅 ${new Date(w.timestamp).toLocaleDateString()}</small></div>`;
-        }
-        container.innerHTML = html;
-    }
-    
-    function renderHistoryList() {
-        const container = document.getElementById('historyList');
-        if(raffleHistory.length === 0) {
-            container.innerHTML = '<p>📭 ምንም ያለፈ እጣ የለም</p>';
-            return;
-        }
-        let html = '';
-        for(let h of raffleHistory) {
-            html += `<div style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #ddd;background:#f9fafb;margin:5px 0;border-radius:10px"><div><strong>🆔 እጣ #${h.id}</strong><br><small>📅 ${new Date(h.timestamp).toLocaleDateString()}</small></div><div>📊 ${h.soldCount}/${h.totalNumbers} ተሽጧል<br>🏆 ${h.winners.join(', ')}</div></div>`;
-        }
-        container.innerHTML = html;
-    }
-    
-    function showTab(tab) {
-        document.getElementById('joinTab').classList.add('hidden');
-        document.getElementById('myNumbersTab').classList.add('hidden');
-        document.getElementById('historyTab').classList.add('hidden');
-        document.getElementById('winnersTab').classList.add('hidden');
-        document.getElementById(`${tab}Tab`).classList.remove('hidden');
-        if(tab === 'winners') renderWinnersList();
-        if(tab === 'history') renderHistoryList();
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        if(event && event.target) event.target.classList.add('active');
-    }
-    
-    function showAdminTab(tab) {
-        document.getElementById('adminVerifyTab').classList.add('hidden');
-        document.getElementById('adminNewTab').classList.add('hidden');
-        document.getElementById('adminReportTab').classList.add('hidden');
-        if(tab === 'verify') document.getElementById('adminVerifyTab').classList.remove('hidden');
-        else if(tab === 'new') document.getElementById('adminNewTab').classList.remove('hidden');
-        else document.getElementById('adminReportTab').classList.remove('hidden');
-        
-        document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.classList.remove('active'));
-        if(event && event.target) event.target.classList.add('active');
-    }
-    
-    function generateLoginCode() {
-        currentLoginCode = Math.floor(100000 + Math.random() * 900000).toString();
-        codeExpiry = Date.now() + 10 * 60 * 1000;
-        return currentLoginCode;
-    }
-    
-    async function requestAdminLogin() {
-        const code = generateLoginCode();
-        await sendTelegram(ADMIN_CHAT_ID, `🔐 የአስተዳዳሪ ኮድህ: ${code}\n⏰ ለ10 ደቂቃ ብቻ ይሰራል`);
-        alert("ኮድ ወደ ቴሌግራም ተልኳል!");
-        document.getElementById('adminPanel').classList.remove('hidden');
-        document.getElementById('adminLoginArea').classList.remove('hidden');
-        document.getElementById('adminContent').classList.add('hidden');
-    }
-    
-    function verifyAdminCode() {
-        const enteredCode = document.getElementById('adminCode').value.trim();
-        if(!enteredCode) { alert("ኮድ ያስገቡ"); return; }
-        if(enteredCode === currentLoginCode && Date.now() < codeExpiry) {
-            adminLoggedIn = true;
-            sessionStorage.setItem('adminLoggedIn', 'true');
-            document.getElementById('adminContent').classList.remove('hidden');
-            document.getElementById('adminLoginArea').classList.add('hidden');
-            renderPendingList();
-            renderAdminStats();
-            updateSalesChartAdmin();
-            alert("✅ በደህና ገብተዋል");
-            currentLoginCode = null;
-        } else if(Date.now() >= codeExpiry) {
-            alert("❌ ኮዱ ጊዜው አልፏል!");
-        } else {
-            alert("❌ የተሳሳተ ኮድ!");
-        }
-    }
-    
-    function closeAdminPanel() {
-        document.getElementById('adminPanel').classList.add('hidden');
-        document.getElementById('adminCode').value = '';
-    }
-    
-    function initAppAfterLogin() {
-        document.getElementById('searchBtn').onclick = checkNumberStatus;
-        document.getElementById('autoSelectBtn').onclick = autoSelectNumbers;
-        document.getElementById('submitBtn').onclick = submitEntry;
-        document.getElementById('searchMyBtn').onclick = searchMyNumbers;
-        document.getElementById('secretAdminBtn').ondblclick = requestAdminLogin;
-        if(sessionStorage.getItem('adminLoggedIn') === 'true') {
-            adminLoggedIn = true;
-            document.getElementById('adminContent').classList.remove('hidden');
-            document.getElementById('adminLoginArea').classList.add('hidden');
-            renderPendingList();
-            renderAdminStats();
-            updateSalesChartAdmin();
-        }
-        showPrizeInfo();
-    }
-    
-    // ማስጀመሪያ - ቋንቋ ገጹን አሳይ
-    document.getElementById('languagePage').classList.remove('hidden');
-    
-    document.getElementById('loginBtn').onclick = loginOrRegister;
-    document.getElementById('skipBtn').onclick = skipLogin;
-</script>
-</body>
-</html>
