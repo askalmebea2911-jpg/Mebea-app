@@ -11,13 +11,12 @@
         body.dark-mode .card{background:rgba(30,30,46,.95);color:#fff}
         body.dark-mode .number{background:#2d2d3d;color:#fff}
         body.dark-mode .stat-card{background:#2d2d3d;color:#fff}
-        body.dark-mode .pending-card{background:#2d2d3d;color:#fff;border-color:#444}
+        body.dark-mode .pending-card{background:#2d2d3d;color:#fff}
         body.dark-mode .selected-info{background:#1a472a;color:#fff}
         body.dark-mode .winner-card{background:#2d2d3d;color:#fff}
-        body.dark-mode .link-info{background:#2d2d3d;color:#fff}
-        body.dark-mode input,body.dark-mode select{background:#2d2d3d;color:#fff;border-color:#555}
+        body.dark-mode input{background:#2d2d3d;color:#fff;border-color:#555}
         .container{max-width:600px;margin:0 auto}
-        .card{background:white;border-radius:20px;padding:24px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,0.2);transition:background 0.3s}
+        .card{background:white;border-radius:20px;padding:24px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
         h1,h2{text-align:center;margin-bottom:20px;color:#1a472a}
         body.dark-mode h1,body.dark-mode h2{color:#ffd700}
         .lang-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
@@ -54,26 +53,22 @@
         .share-btn{flex:1;padding:10px;border-radius:16px;text-align:center}
         .telegram-share{background:#0088cc;color:white}
         .copy-link{background:#6b7280;color:white}
-        .link-info{background:#fef3c7;padding:12px;border-radius:16px;margin-top:10px;font-size:14px;text-align:center;word-break:break-all}
-        .admin-cube{position:fixed;bottom:20px;right:20px;width:50px;height:50px;cursor:pointer;z-index:1000;transition:transform 0.3s}
-        .admin-cube:hover{transform:scale(1.1)}
+        .link-info{background:#fef3c7;padding:12px;border-radius:16px;margin-top:10px;font-size:14px;text-align:center}
+        .admin-cube{position:fixed;bottom:20px;right:20px;width:50px;height:50px;cursor:pointer}
         .cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:rotate 4s infinite linear}
         @keyframes rotate{from{transform:rotateX(0deg) rotateY(0deg)}to{transform:rotateX(360deg) rotateY(360deg)}}
-        .face{position:absolute;width:50px;height:50px;background:rgba(26,71,42,0.9);border:2px solid #ffd700;box-shadow:0 0 10px rgba(255,215,0,0.5)}
+        .face{position:absolute;width:50px;height:50px;background:rgba(26,71,42,0.9);border:2px solid #ffd700}
         .face.front{transform:translateZ(25px)}
         .face.back{transform:rotateY(180deg) translateZ(25px)}
         .face.right{transform:rotateY(90deg) translateZ(25px)}
         .face.left{transform:rotateY(-90deg) translateZ(25px)}
         .face.top{transform:rotateX(90deg) translateZ(25px)}
         .face.bottom{transform:rotateX(-90deg) translateZ(25px)}
-        .dark-mode-btn{position:fixed;bottom:20px;left:20px;width:50px;height:50px;background:#1f2937;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;z-index:1000;transition:transform 0.3s;border:none;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
-        .dark-mode-btn:hover{transform:scale(1.1)}
-        @media (max-width:480px){.admin-cube{width:40px;height:40px;bottom:15px;right:15px}.face{width:40px;height:40px}.face.front{transform:translateZ(20px)}.dark-mode-btn{width:40px;height:40px;bottom:15px;left:15px;font-size:20px}}
+        .dark-mode-btn{position:fixed;bottom:20px;left:20px;width:50px;height:50px;background:#1f2937;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;border:none}
         .data-controls{display:flex;gap:10px;margin-top:15px}
         .data-controls button{flex:1;background:#6b7280;color:white}
         .payment-info{background:#ffd700;color:#1a472a;text-align:center;margin:15px 0;padding:15px;border-radius:16px}
-        .payment-info p{margin:5px 0}
-        .payment-info strong{background:white;padding:5px 10px;border-radius:10px}
+        @media(max-width:480px){.admin-cube{width:40px;height:40px}.face{width:40px;height:40px}.face.front{transform:translateZ(20px)}}
     </style>
 </head>
 <body>
@@ -101,12 +96,11 @@
         <div class="card">
             <h1 id="title">🎰 መብኣ ሎተሪ</h1>
             
-            <!-- የክፍያ መረጃ -->
             <div class="payment-info">
-                <p>💳 <strong>ክፍያ ማድረጊያ</strong> 💳</p>
-                <p>📱 ቴሌ ብር: <strong>09XXXXXXXX</strong></p>
-                <p>🏦 ንግድ ባንክ: <strong>1000XXXXXXX</strong></p>
-                <p style="font-size:12px; margin-top:10px">⚠️ ክፍያ ከፈጸሙ በኋላ ማስረጃዎን ይስቀሉ</p>
+                <p>💳 <strong id="paymentTitle">ክፍያ ማድረጊያ</strong> 💳</p>
+                <p>📱 <span id="telebirrLabel">ቴሌ ብር</span>: <strong>09XXXXXXXX</strong></p>
+                <p>🏦 <span id="bankLabel">ንግድ ባንክ</span>: <strong>1000XXXXXXX</strong></p>
+                <p style="font-size:12px; margin-top:10px" id="paymentWarning">⚠️ ክፍያ ከፈጸሙ በኋላ ማስረጃዎን ይስቀሉ</p>
             </div>
             
             <div id="userLevelDisplay" class="hidden" style="text-align:center;margin-bottom:15px;padding:8px;background:#f3f4f6;border-radius:16px"></div>
@@ -136,8 +130,8 @@
                 <input type="tel" id="phone" placeholder="📞 ስልክ ቁጥር">
                 
                 <div class="receipt-type">
-                    <label class="active" onclick="setReceiptType('image')">🖼️ ምስል</label>
-                    <label onclick="setReceiptType('number')">🔢 ቁጥር</label>
+                    <label class="active" onclick="setReceiptType('image')" id="imageOptionLabel">🖼️ ምስል</label>
+                    <label onclick="setReceiptType('number')" id="numberOptionLabel">🔢 ቁጥር</label>
                 </div>
                 
                 <div id="imageDiv">
@@ -217,18 +211,12 @@
 
 <button id="darkModeBtn" class="dark-mode-btn">🌙</button>
 <div id="adminCube" class="admin-cube">
-    <div class="cube">
-        <div class="face front"></div>
-        <div class="face back"></div>
-        <div class="face right"></div>
-        <div class="face left"></div>
-        <div class="face top"></div>
-        <div class="face bottom"></div>
-    </div>
+    <div class="cube"><div class="face front"></div><div class="face back"></div><div class="face right"></div><div class="face left"></div><div class="face top"></div><div class="face bottom"></div></div>
 </div>
 
 <script>
     const API_URL = window.location.origin;
+    let ADMIN_ID = null;
     
     let selectedNumbers = [];
     let currentRaffle = { totalNumbers: 100, pricePerTicket: 20, numbers: [] };
@@ -244,155 +232,147 @@
     let adminLoggedIn = false;
     let registeredReceiptNumbers = [];
     
-    // ትርጉሞች
+    // ============ ሙሉ የቋንቋ ትርጉም ============
     const translations = {
         am: {
-            langTitle:"🌍 ቋንቋ ምረጡ", loginTitle:"🔐 ግቤት / ምዝገባ", title:"🎰 መብኣ ሎተሪ",
-            available:"📋 ያልተሸጡ", pending:"⏳ በማጣበቅ ላይ", taken:"✅ የተሸጡ",
-            join:"🎏 ተቀላቀል", list:"🔍 ቁጥሮቼ", history:"📜 ታሪክ", winners:"🏆 አሸናፊዎች",
-            selected:"✅ የመረጡት", price:"💰 ክፍያ", birr:"ብር",
-            fillName:"እባክዎ ሙሉ ስም ይሙሉ", fillPhone:"እባክዎ ስልክ ቁጥር ይሙሉ", 
-            selectNumber:"እባክዎ ቢያንስ አንድ ቁጥር ይምረጡ", noNumbers:"ምንም ቁጥር የለም", 
-            selectLimit:"ከ10 በላይ ቁጥሮች መምረጥ አይቻልም", noResult:"ምንም ቁጥር አልተገኘም",
-            paymentSent:"ክፍያዎ ተልኳል! እባክዎ ማረጋገጫ ይጠብቁ",
-            codeSent:"ደህንነት ኮድ ወደ ቴሌግራም ተልኳል!", loginSuccess:"በደህና ገብተዋል!",
-            confirmed:"ክፍያ ተረጋገጠ", rejected:"ክፍያ ውድቅ ተደርጓል", drawSuccess:"አሸናፊዎች በተሳካ ሁኔታ ተሳሉ!",
-            imageUploading:"📤 ምስል በመላክ ላይ...", imageUploaded:"✅ ምስል ተልኳል!",
-            receiptDuplicateError:"❌ ይህ ደረሰኝ ቁጥር አስቀድሞ ጥቅም ላይ ውሏል!",
-            enterReceiptNumber:"✏️ ከምስሉ ላይ ያነበቡትን የደረሰኝ ቁጥር ያስገቡ",
-            receiptRegistered:"✅ ደረሰኝ ቁጥር ተመዝግቧል",
-            searchBtn:"ፈልግ", requestCode:"📨 ኮድ ጠይቅ", verifyCode:"🔓 ክፈት", 
-            confirmBtn:"✅ አረጋግጥ", rejectBtn:"❌ ውድቅ አድርግ", drawBtn:"🏆 አሸናፊዎችን ሳል",
-            createBtn:"🚀 አዲስ እጣ ጀምር", closeBtn:"🔒 ዝጋ",
-            shareTelegram:"📨 በቴሌግራም አጋራ", copyLink:"🔗 ሊንክ ቅዳ", linkLabel:"የሎተሪው ሊንክ",
-            adminTitle:"👑 አስተዳዳሪ ፓነል", adminCodeLabel:"🔐 ደህንነት ኮድ ያስገቡ",
-            pendingTitle:"📋 የተጠባባቂ ክፍያዎች", newRaffleTitle:"🆕 አዲስ እጣ መፍጠሪያ",
-            auditTitle:"📜 የማስተካከያ ታሪክ", adminPending:"✅ ማረጋገጫ", 
-            adminNew:"🆕 አዲስ እጣ", adminAudit:"📜 ታሪክ",
-            newTotalPlaceholder:"አጠቃላይ ቁጥሮች", newPricePlaceholder:"የአንድ ቲኬት ዋጋ በብር",
-            prize1Placeholder:"1ኛ ሽልማት", prize2Placeholder:"2ኛ ሽልማት", prize3Placeholder:"3ኛ ሽልማት",
-            userLevel:"🏅 የእርስዎ ደረጃ", totalSpent:"💰 አጠቃላይ ክፍያ", 
-            bronze:"ብሮንዝ 🥉", silver:"ብር 🥈", gold:"ወርቅ 🏆", platinum:"ፕላቲኒየም ⭐",
-            receiptImage:"🖼️ የክፍያ ደረሰኝ ምስል", receiptNumber:"🧾 የክፍያ ደረሰኝ ቁጥር", 
-            prize:"ሽልማት", total:"አጠቃላይ", revenue:"ገቢ",
-            imageOption:"🖼️ ምስል", numberOption:"🔢 ቁጥር",
-            copySuccess:"✅ ሊንክ ተቀድቷል!", linkCopied:"ሊንክ ተቀድቷል",
-            phonePlaceholder:"📞 ስልክ ቁጥር (09xxxxxxxx)", passwordPlaceholder:"🔒 ሚስጥር ቁጥር (አማራጭ)",
-            fullNamePlaceholder:"👤 ሙሉ ስም", searchPhonePlaceholder:"📞 ስልክ ቁጥር",
-            receiptNumberPlaceholder:"🧾 የክፍያ ደረሰኝ ቁጥር", loginBtn:"🔐 ግባ / ተመዝገብ", skipBtn:"⏭️ ያለ ምዝገባ ቀጥል"
+            langTitle: "🌍 ቋንቋ ምረጡ", loginTitle: "🔐 ግቤት / ምዝገባ", title: "🎰 መብኣ ሎተሪ",
+            available: "📋 ያልተሸጡ", pending: "⏳ በማጣበቅ ላይ", taken: "✅ የተሸጡ",
+            join: "🎏 ተቀላቀል", list: "🔍 ቁጥሮቼ", history: "📜 ታሪክ", winners: "🏆 አሸናፊዎች",
+            selected: "✅ የመረጡት", price: "💰 ክፍያ", birr: "ብር",
+            fillName: "እባክዎ ሙሉ ስም ይሙሉ", fillPhone: "እባክዎ ስልክ ቁጥር ይሙሉ",
+            selectNumber: "እባክዎ ቢያንስ አንድ ቁጥር ይምረጡ", noNumbers: "ምንም ቁጥር የለም",
+            selectLimit: "ከ10 በላይ ቁጥሮች መምረጥ አይቻልም", noResult: "ምንም ቁጥር አልተገኘም",
+            paymentSent: "ክፍያዎ ተልኳል! እባክዎ ማረጋገጫ ይጠብቁ",
+            codeSent: "ደህንነት ኮድ ወደ ቴሌግራም ተልኳል!", loginSuccess: "በደህና ገብተዋል!",
+            confirmed: "ክፍያ ተረጋገጠ", rejected: "ክፍያ ውድቅ ተደርጓል", drawSuccess: "አሸናፊዎች በተሳካ ሁኔታ ተሳሉ!",
+            receiptDuplicateError: "❌ ይህ ደረሰኝ ቁጥር አስቀድሞ ጥቅም ላይ ውሏል!",
+            enterReceiptNumber: "✏️ ከምስሉ ላይ ያነበቡትን የደረሰኝ ቁጥር ያስገቡ",
+            searchBtn: "ፈልግ", requestCode: "📨 ኮድ ጠይቅ", verifyCode: "🔓 ክፈት",
+            confirmBtn: "✅ አረጋግጥ", rejectBtn: "❌ ውድቅ አድርግ", drawBtn: "🏆 አሸናፊዎችን ሳል",
+            createBtn: "🚀 አዲስ እጣ ጀምር", closeBtn: "🔒 ዝጋ",
+            shareTelegram: "📨 በቴሌግራም አጋራ", copyLink: "🔗 ሊንክ ቅዳ", linkLabel: "የሎተሪው ሊንክ",
+            adminTitle: "👑 አስተዳዳሪ ፓነል", adminCodeLabel: "🔐 ደህንነት ኮድ ያስገቡ",
+            pendingTitle: "📋 የተጠባባቂ ክፍያዎች", newRaffleTitle: "🆕 አዲስ እጣ መፍጠሪያ",
+            auditTitle: "📜 የማስተካከያ ታሪክ", adminPending: "✅ ማረጋገጫ",
+            adminNew: "🆕 አዲስ እጣ", adminAudit: "📜 ታሪክ",
+            newTotalPlaceholder: "አጠቃላይ ቁጥሮች", newPricePlaceholder: "የአንድ ቲኬት ዋጋ በብር",
+            prize1Placeholder: "1ኛ ሽልማት", prize2Placeholder: "2ኛ ሽልማት", prize3Placeholder: "3ኛ ሽልማት",
+            userLevel: "🏅 የእርስዎ ደረጃ", totalSpent: "💰 አጠቃላይ ክፍያ",
+            bronze: "ብሮንዝ 🥉", silver: "ብር 🥈", gold: "ወርቅ 🏆", platinum: "ፕላቲኒየም ⭐",
+            receiptImage: "🖼️ የክፍያ ደረሰኝ ምስል", receiptNumber: "🧾 የክፍያ ደረሰኝ ቁጥር",
+            imageOption: "🖼️ ምስል", numberOption: "🔢 ቁጥር",
+            copySuccess: "✅ ሊንክ ተቀድቷል!",
+            paymentTitle: "💳 ክፍያ ማድረጊያ", telebirrLabel: "ቴሌ ብር", bankLabel: "ንግድ ባንክ", paymentWarning: "⚠️ ክፍያ ከፈጸሙ በኋላ ማስረጃዎን ይስቀሉ"
         },
         en: {
-            langTitle:"🌍 Choose Language", loginTitle:"🔐 Login / Register", title:"🎰 Mebea Lottery",
-            available:"📋 Available", pending:"⏳ Pending", taken:"✅ Taken",
-            join:"🎏 Join", list:"🔍 My Numbers", history:"📜 History", winners:"🏆 Winners",
-            selected:"✅ Selected", price:"💰 Payment", birr:"Birr",
-            fillName:"Please enter full name", fillPhone:"Please enter phone number",
-            selectNumber:"Please select at least one number", noNumbers:"No numbers found",
-            selectLimit:"Cannot select more than 10 numbers", noResult:"No numbers found",
-            paymentSent:"Payment sent! Please wait for confirmation",
-            codeSent:"Security code sent to Telegram!", loginSuccess:"Login successful!",
-            confirmed:"Payment confirmed", rejected:"Payment rejected", drawSuccess:"Winners drawn successfully!",
-            imageUploading:"📤 Uploading image...", imageUploaded:"✅ Image uploaded!",
-            receiptDuplicateError:"❌ This receipt number has already been used!",
-            enterReceiptNumber:"✏️ Enter the receipt number you see on the image",
-            receiptRegistered:"✅ Receipt number registered",
-            searchBtn:"Search", requestCode:"📨 Request Code", verifyCode:"🔓 Unlock",
-            confirmBtn:"✅ Confirm", rejectBtn:"❌ Reject", drawBtn:"🏆 Draw Winners",
-            createBtn:"🚀 Create Raffle", closeBtn:"🔒 Close",
-            shareTelegram:"📨 Share on Telegram", copyLink:"🔗 Copy Link", linkLabel:"Lottery Link",
-            adminTitle:"👑 Admin Panel", adminCodeLabel:"🔐 Enter security code",
-            pendingTitle:"📋 Pending Payments", newRaffleTitle:"🆕 Create New Raffle",
-            auditTitle:"📜 Audit Log", adminPending:"✅ Verification",
-            adminNew:"🆕 New Raffle", adminAudit:"📜 History",
-            newTotalPlaceholder:"Total numbers", newPricePlaceholder:"Ticket price (Birr)",
-            prize1Placeholder:"1st Prize", prize2Placeholder:"2nd Prize", prize3Placeholder:"3rd Prize",
-            userLevel:"🏅 Your Level", totalSpent:"💰 Total Spent",
-            bronze:"Bronze 🥉", silver:"Silver 🥈", gold:"Gold 🏆", platinum:"Platinum ⭐",
-            receiptImage:"🖼️ Receipt Image", receiptNumber:"🧾 Receipt Number",
-            prize:"Prize", total:"Total", revenue:"Revenue",
-            imageOption:"🖼️ Image", numberOption:"🔢 Number",
-            copySuccess:"✅ Link copied!", linkCopied:"Link copied",
-            phonePlaceholder:"📞 Phone number (09xxxxxxxx)", passwordPlaceholder:"🔒 Password (optional)",
-            fullNamePlaceholder:"👤 Full name", searchPhonePlaceholder:"📞 Phone number",
-            receiptNumberPlaceholder:"🧾 Receipt number", loginBtn:"🔐 Login / Register", skipBtn:"⏭️ Continue without login"
+            langTitle: "🌍 Choose Language", loginTitle: "🔐 Login / Register", title: "🎰 Mebea Lottery",
+            available: "📋 Available", pending: "⏳ Pending", taken: "✅ Taken",
+            join: "🎏 Join", list: "🔍 My Numbers", history: "📜 History", winners: "🏆 Winners",
+            selected: "✅ Selected", price: "💰 Payment", birr: "Birr",
+            fillName: "Please enter full name", fillPhone: "Please enter phone number",
+            selectNumber: "Please select at least one number", noNumbers: "No numbers found",
+            selectLimit: "Cannot select more than 10 numbers", noResult: "No numbers found",
+            paymentSent: "Payment sent! Please wait for confirmation",
+            codeSent: "Security code sent to Telegram!", loginSuccess: "Login successful!",
+            confirmed: "Payment confirmed", rejected: "Payment rejected", drawSuccess: "Winners drawn successfully!",
+            receiptDuplicateError: "❌ This receipt number has already been used!",
+            enterReceiptNumber: "✏️ Enter the receipt number you see on the image",
+            searchBtn: "Search", requestCode: "📨 Request Code", verifyCode: "🔓 Unlock",
+            confirmBtn: "✅ Confirm", rejectBtn: "❌ Reject", drawBtn: "🏆 Draw Winners",
+            createBtn: "🚀 Create Raffle", closeBtn: "🔒 Close",
+            shareTelegram: "📨 Share on Telegram", copyLink: "🔗 Copy Link", linkLabel: "Lottery Link",
+            adminTitle: "👑 Admin Panel", adminCodeLabel: "🔐 Enter security code",
+            pendingTitle: "📋 Pending Payments", newRaffleTitle: "🆕 Create New Raffle",
+            auditTitle: "📜 Audit Log", adminPending: "✅ Verification",
+            adminNew: "🆕 New Raffle", adminAudit: "📜 History",
+            newTotalPlaceholder: "Total numbers", newPricePlaceholder: "Ticket price (Birr)",
+            prize1Placeholder: "1st Prize", prize2Placeholder: "2nd Prize", prize3Placeholder: "3rd Prize",
+            userLevel: "🏅 Your Level", totalSpent: "💰 Total Spent",
+            bronze: "Bronze 🥉", silver: "Silver 🥈", gold: "Gold 🏆", platinum: "Platinum ⭐",
+            receiptImage: "🖼️ Receipt Image", receiptNumber: "🧾 Receipt Number",
+            imageOption: "🖼️ Image", numberOption: "🔢 Number",
+            copySuccess: "✅ Link copied!",
+            paymentTitle: "💳 Payment Methods", telebirrLabel: "Telebirr", bankLabel: "Commercial Bank", paymentWarning: "⚠️ After payment, upload your receipt here"
         },
         ti: {
-            langTitle:"🌍 ቋንቋ ምረጹ", loginTitle:"🔐 ምዝገባ / ብጹሕ", title:"🎰 መብኣ ሎተሪ",
-            available:"📋 ዘይተሸጠ", pending:"⏳ ኣብ ምጽራይ ዘሎ", taken:"✅ ተሽጡ",
-            join:"🎏 ተቀላቀል", list:"🔍 ቁጽሪታተይ", history:"📜 ታሪኽ", winners:"🏆 ተዓወቲታት",
-            selected:"✅ ዝመረጥካዮ", price:"💰 ክፍሊት", birr:"ብር",
-            fillName:"በጃኻ ምሉእ ስም ኣእትዉ", fillPhone:"በጃኻ ቁጽሪ ተሌፎን ኣእትዉ",
-            selectNumber:"በጃኻ ብውሕዱ ሓደ ቁጽሪ ምረጽ", noNumbers:"ምንም ቁጽሪ የለን",
-            selectLimit:"ካብ 10 ዝበዝሑ ክትምርጽ ኣይትኽእልን", noResult:"ምንም ቁጽሪ ኣይተረኽበን",
-            paymentSent:"ክፍሊትካ ተላእኩ! ምርግጋጽ ተጸበይ",
-            codeSent:"ኮድ ናብ ቴሌግራም ተላእኩ!", loginSuccess:"ብደሓን ኣትዩ!",
-            confirmed:"ክፍሊት ተረጋጊጹ", rejected:"ክፍሊት ውድቅ ተደሪጉ", drawSuccess:"ተዓወቲታት ተሳሊቦም!",
-            imageUploading:"📤 ምስሊ ይላእ ኣሎ...", imageUploaded:"✅ ምስሊ ተላእኩ!",
-            receiptDuplicateError:"❌ እዚ ቁጽሪ ደረሰኝ ቀደም እውን ተጠቒሙ ኣሎ!",
-            enterReceiptNumber:"✏️ ካብ ምስሊ ዘንበብካዮ ቁጽሪ ደረሰኝ ኣእትዉ",
-            receiptRegistered:"✅ ቁጽሪ ደረሰኝ ተመዝጊቡ",
-            searchBtn:"ድለይ", requestCode:"📨 ኮድ ሕተት", verifyCode:"🔓 ክፈት",
-            confirmBtn:"✅ ኣረጋግጽ", rejectBtn:"❌ ውድቅ ኣድርግ", drawBtn:"🏆 ተዓወቲታት ስለብ",
-            createBtn:"🚀 ሓድሽ እጣ ጀምር", closeBtn:"🔒 ዕጾ",
-            shareTelegram:"📨 በቴሌግራም አጋራ", copyLink:"🔗 ሊንክ ቅዳ", linkLabel:"ናይ ሎተሪ ሊንክ",
-            adminTitle:"👑 ናይ ኣስተዳደር ፓነል", adminCodeLabel:"🔐 ኮድ ኣእትዉ",
-            pendingTitle:"📋 ክፍሊታት ዘለዉ", newRaffleTitle:"🆕 ሓድሽ እጣ ፍጠር",
-            auditTitle:"📜 ታሪኽ", adminPending:"✅ ምርግጋጽ",
-            adminNew:"🆕 ሓድሽ እጣ", adminAudit:"📜 ታሪኽ",
-            newTotalPlaceholder:"ድምር ቁጽሪታት", newPricePlaceholder:"ትኬት (ብር)",
-            prize1Placeholder:"1ኛ ሽልማት", prize2Placeholder:"2ኛ ሽልማት", prize3Placeholder:"3ኛ ሽልማት",
-            userLevel:"🏅 ደረጃኻ", totalSpent:"💰 ድምር ክፍሊት",
-            bronze:"ብሮንዝ 🥉", silver:"ብር 🥈", gold:"ወርቅ 🏆", platinum:"ፕላቲኒየም ⭐",
-            receiptImage:"🖼️ ምስሊ ደረሰኝ", receiptNumber:"🧾 ቁጽሪ ደረሰኝ",
-            prize:"ሽልማት", total:"ድምር", revenue:"ገቢ",
-            imageOption:"🖼️ ምስሊ", numberOption:"🔢 ቁጽሪ",
-            copySuccess:"✅ ሊንክ ተቀዲሑ!", linkCopied:"ሊንክ ተቀዲሑ",
-            phonePlaceholder:"📞 ቁጽሪ ተሌፎን (09xxxxxxxx)", passwordPlaceholder:"🔒 ሚስጥር ቃል (ኣማራጺ)",
-            fullNamePlaceholder:"👤 ምሉእ ስም", searchPhonePlaceholder:"📞 ቁጽሪ ተሌፎን",
-            receiptNumberPlaceholder:"🧾 ቁጽሪ ደረሰኝ", loginBtn:"🔐 ምዝገባ / ብጹሕ", skipBtn:"⏭️ ያለ ምዝገባ ቀጥል"
+            langTitle: "🌍 ቋንቋ ምረጹ", loginTitle: "🔐 ምዝገባ / ብጹሕ", title: "🎰 መብኣ ሎተሪ",
+            available: "📋 ዘይተሸጠ", pending: "⏳ ኣብ ምጽራይ ዘሎ", taken: "✅ ተሽጡ",
+            join: "🎏 ተቀላቀል", list: "🔍 ቁጽሪታተይ", history: "📜 ታሪኽ", winners: "🏆 ተዓወቲታት",
+            selected: "✅ ዝመረጥካዮ", price: "💰 ክፍሊት", birr: "ብር",
+            fillName: "በጃኻ ምሉእ ስም ኣእትዉ", fillPhone: "በጃኻ ቁጽሪ ተሌፎን ኣእትዉ",
+            selectNumber: "በጃኻ ብውሕዱ ሓደ ቁጽሪ ምረጽ", noNumbers: "ምንም ቁጽሪ የለን",
+            selectLimit: "ካብ 10 ዝበዝሑ ክትምርጽ ኣይትኽእልን", noResult: "ምንም ቁጽሪ ኣይተረኽበን",
+            paymentSent: "ክፍሊትካ ተላእኩ! ምርግጋጽ ተጸበይ",
+            codeSent: "ኮድ ናብ ቴሌግራም ተላእኩ!", loginSuccess: "ብደሓን ኣትዩ!",
+            confirmed: "ክፍሊት ተረጋጊጹ", rejected: "ክፍሊት ውድቅ ተደሪጉ", drawSuccess: "ተዓወቲታት ተሳሊቦም!",
+            receiptDuplicateError: "❌ እዚ ቁጽሪ ደረሰኝ ቀደም እውን ተጠቒሙ ኣሎ!",
+            enterReceiptNumber: "✏️ ካብ ምስሊ ዘንበብካዮ ቁጽሪ ደረሰኝ ኣእትዉ",
+            searchBtn: "ድለይ", requestCode: "📨 ኮድ ሕተት", verifyCode: "🔓 ክፈት",
+            confirmBtn: "✅ ኣረጋግጽ", rejectBtn: "❌ ውድቅ ኣድርግ", drawBtn: "🏆 ተዓወቲታት ስለብ",
+            createBtn: "🚀 ሓድሽ እጣ ጀምር", closeBtn: "🔒 ዕጾ",
+            shareTelegram: "📨 በቴሌግራም አጋራ", copyLink: "🔗 ሊንክ ቅዳ", linkLabel: "ናይ ሎተሪ ሊንክ",
+            adminTitle: "👑 ናይ ኣስተዳደር ፓነል", adminCodeLabel: "🔐 ኮድ ኣእትዉ",
+            pendingTitle: "📋 ክፍሊታት ዘለዉ", newRaffleTitle: "🆕 ሓድሽ እጣ ፍጠር",
+            auditTitle: "📜 ታሪኽ", adminPending: "✅ ምርግጋጽ",
+            adminNew: "🆕 ሓድሽ እጣ", adminAudit: "📜 ታሪኽ",
+            newTotalPlaceholder: "ድምር ቁጽሪታት", newPricePlaceholder: "ትኬት (ብር)",
+            prize1Placeholder: "1ኛ ሽልማት", prize2Placeholder: "2ኛ ሽልማት", prize3Placeholder: "3ኛ ሽልማት",
+            userLevel: "🏅 ደረጃኻ", totalSpent: "💰 ድምር ክፍሊት",
+            bronze: "ብሮንዝ 🥉", silver: "ብር 🥈", gold: "ወርቅ 🏆", platinum: "ፕላቲኒየም ⭐",
+            receiptImage: "🖼️ ምስሊ ደረሰኝ", receiptNumber: "🧾 ቁጽሪ ደረሰኝ",
+            imageOption: "🖼️ ምስሊ", numberOption: "🔢 ቁጽሪ",
+            copySuccess: "✅ ሊንክ ተቀዲሑ!",
+            paymentTitle: "💳 ክፍሊት ምግባሪ", telebirrLabel: "ቴሌ ብር", bankLabel: "ንግድ ባንክ", paymentWarning: "⚠️ ክፍሊት ከፈጸምካ ድሕሪኡ ማስረጻኻ ኣስፍር"
         },
         om: {
-            langTitle:"🌍 Afaan Barbaad", loginTitle:"🔐 Seensa / Galmee", title:"🎰 Mebea Lootirii",
-            available:"📋 Hin jire", pending:"⏳ Eeggamaa", taken:"✅ Fudhatame",
-            join:"🎏 Maka", list:"🔍 Lakkoofsota Koo", history:"📜 Seenaa", winners:"🏆 Mo'attoota",
-            selected:"✅ Filatame", price:"💰 Kaffaltii", birr:"Birrii",
-            fillName:"Maqaa guutuu galchi", fillPhone:"Lakkoofsa bilbilaa galchi",
-            selectNumber:"Lakkoofsa tokko filadhu", noNumbers:"Lakkoofsi hin argamu",
-            selectLimit:"10 ol filachuu hin dandeessu", noResult:"Lakkoofsi hin argamne",
-            paymentSent:"Kaffaltiin ergame! Mirkaneessa eegaa",
-            codeSent:"Koodiin ergame!", loginSuccess:"Seenson milkaa'e!",
-            confirmed:"Kaffaltiin mirkanaa'e", rejected:"Kaffaltiin gadi buufame", drawSuccess:"Mo'attoonni filataman!",
-            imageUploading:"📤 Fotto ergaa jira...", imageUploaded:"✅ Fotto ergame!",
-            receiptDuplicateError:"❌ Lakkoofsi rasiitii kun duraan fayyadamameera!",
-            enterReceiptNumber:"✏️ Lakkoofsa rasiitii irratti argite galchi",
-            receiptRegistered:"✅ Lakkoofsi rasiitii galmeeffame",
-            searchBtn:"Barbaadi", requestCode:"📨 Koodii gaafadhu", verifyCode:"🔓 Ban",
-            confirmBtn:"✅ Mirkaneessi", rejectBtn:"❌ Gadhi", drawBtn:"🏆 Mo'attoota filadhu",
-            createBtn:"🚀 Lootirii haaraa eegali", closeBtn:"🔒 Cufi",
-            shareTelegram:"📨 Telegiraamitti qoodi", copyLink:"🔗 Liinkii barreessi", linkLabel:"Liinkii Lootirii",
-            adminTitle:"👥 Paanela Adeemsisaa", adminCodeLabel:"🔐 Koodii galchi",
-            pendingTitle:"📋 Kaffaltii eeggamtuu", newRaffleTitle:"🆕 Lootirii haaraa uumi",
-            auditTitle:"📜 Seenaa", adminPending:"✅ Mirkaneessa",
-            adminNew:"🆕 Lootirii haaraa", adminAudit:"📜 Seenaa",
-            newTotalPlaceholder:"Lakkoofsota idoo", newPricePlaceholder:"Gatii tikketii (Birrii)",
-            prize1Placeholder:"Badhaasa 1ffaa", prize2Placeholder:"Badhaasa 2ffaa", prize3Placeholder:"Badhaasa 3ffaa",
-            userLevel:"🏅 Sadarkaa keessan", totalSpent:"💰 Iddoo kaffaltii",
-            bronze:"Bronze 🥉", silver:"Silver 🥈", gold:"Gold 🏆", platinum:"Platinum ⭐",
-            receiptImage:"🖼️ Fotto rasiitii", receiptNumber:"🧾 Lakkoofsa rasiitii",
-            prize:"Badhaasa", total:"Iddoo", revenue:"Galii",
-            imageOption:"🖼️ Fotto", numberOption:"🔢 Lakkoofsa",
-            copySuccess:"✅ Liinkiin barreeffame!", linkCopied:"Liinkiin barreeffame",
-            phonePlaceholder:"📞 Lakkoofsa bilbilaa (09xxxxxxxx)", passwordPlaceholder:"🔒 Jecha icciitii (Filannoo)",
-            fullNamePlaceholder:"👤 Maqaa guutuu", searchPhonePlaceholder:"📞 Lakkoofsa bilbilaa",
-            receiptNumberPlaceholder:"🧾 Lakkoofsa rasiitii", loginBtn:"🔐 Seensa / Galmee", skipBtn:"⏭️ Yoo hin galmeen itti fufi"
+            langTitle: "🌍 Afaan Barbaad", loginTitle: "🔐 Seensa / Galmee", title: "🎰 Mebea Lootirii",
+            available: "📋 Hin jire", pending: "⏳ Eeggamaa", taken: "✅ Fudhatame",
+            join: "🎏 Maka", list: "🔍 Lakkoofsota Koo", history: "📜 Seenaa", winners: "🏆 Mo'attoota",
+            selected: "✅ Filatame", price: "💰 Kaffaltii", birr: "Birrii",
+            fillName: "Maqaa guutuu galchi", fillPhone: "Lakkoofsa bilbilaa galchi",
+            selectNumber: "Lakkoofsa tokko filadhu", noNumbers: "Lakkoofsi hin argamu",
+            selectLimit: "10 ol filachuu hin dandeessu", noResult: "Lakkoofsi hin argamne",
+            paymentSent: "Kaffaltiin ergame! Mirkaneessa eegaa",
+            codeSent: "Koodiin ergame!", loginSuccess: "Seenson milkaa'e!",
+            confirmed: "Kaffaltiin mirkanaa'e", rejected: "Kaffaltiin gadi buufame", drawSuccess: "Mo'attoonni filataman!",
+            receiptDuplicateError: "❌ Lakkoofsi rasiitii kun duraan fayyadamameera!",
+            enterReceiptNumber: "✏️ Lakkoofsa rasiitii irratti argite galchi",
+            searchBtn: "Barbaadi", requestCode: "📨 Koodii gaafadhu", verifyCode: "🔓 Ban",
+            confirmBtn: "✅ Mirkaneessi", rejectBtn: "❌ Gadhi", drawBtn: "🏆 Mo'attoota filadhu",
+            createBtn: "🚀 Lootirii haaraa eegali", closeBtn: "🔒 Cufi",
+            shareTelegram: "📨 Telegiraamitti qoodi", copyLink: "🔗 Liinkii barreessi", linkLabel: "Liinkii Lootirii",
+            adminTitle: "👥 Paanela Adeemsisaa", adminCodeLabel: "🔐 Koodii galchi",
+            pendingTitle: "📋 Kaffaltii eeggamtuu", newRaffleTitle: "🆕 Lootirii haaraa uumi",
+            auditTitle: "📜 Seenaa", adminPending: "✅ Mirkaneessa",
+            adminNew: "🆕 Lootirii haaraa", adminAudit: "📜 Seenaa",
+            newTotalPlaceholder: "Lakkoofsota idoo", newPricePlaceholder: "Gatii tikketii (Birrii)",
+            prize1Placeholder: "Badhaasa 1ffaa", prize2Placeholder: "Badhaasa 2ffaa", prize3Placeholder: "Badhaasa 3ffaa",
+            userLevel: "🏅 Sadarkaa keessan", totalSpent: "💰 Iddoo kaffaltii",
+            bronze: "Bronze 🥉", silver: "Silver 🥈", gold: "Gold 🏆", platinum: "Platinum ⭐",
+            receiptImage: "🖼️ Fotto rasiitii", receiptNumber: "🧾 Lakkoofsa rasiitii",
+            imageOption: "🖼️ Fotto", numberOption: "🔢 Lakkoofsa",
+            copySuccess: "✅ Liinkiin barreeffame!",
+            paymentTitle: "💳 Haala Kaffaltii", telebirrLabel: "Telebirr", bankLabel: "Baankii Komershaalaa", paymentWarning: "⚠️ Kaffaltii erga galchee booda ragaa keessan kaa'aa"
         }
     };
     
     let t = translations.am;
     
+    async function loadAdminId() {
+        try {
+            const response = await fetch('/api/config');
+            const data = await response.json();
+            ADMIN_ID = data.adminId;
+            console.log('ADMIN_ID loaded:', ADMIN_ID);
+        } catch(e) {
+            console.error('Failed to load ADMIN_ID:', e);
+        }
+    }
+    
     function selectLanguage(lang) {
         currentLang = lang;
         t = translations[lang];
+        
         document.getElementById('langTitle').innerText = t.langTitle;
         document.getElementById('loginTitle').innerText = t.loginTitle;
         document.getElementById('title').innerText = t.title;
@@ -406,23 +386,20 @@
         document.getElementById('selectedLabel').innerHTML = t.selected;
         document.getElementById('priceLabel').innerHTML = t.price;
         document.getElementById('birrLabel').innerText = t.birr;
-        document.getElementById('fullName').placeholder = t.fullNamePlaceholder;
-        document.getElementById('phone').placeholder = t.phonePlaceholder;
-        document.getElementById('searchPhone').placeholder = t.searchPhonePlaceholder;
-        document.getElementById('regPhone').placeholder = t.phonePlaceholder;
-        document.getElementById('regPassword').placeholder = t.passwordPlaceholder;
-        document.getElementById('receiptNumber').placeholder = t.receiptNumberPlaceholder;
+        document.getElementById('fullName').placeholder = t.fillName;
+        document.getElementById('phone').placeholder = t.fillPhone;
+        document.getElementById('searchPhone').placeholder = t.fillPhone;
+        document.getElementById('regPhone').placeholder = t.fillPhone;
+        document.getElementById('regPassword').placeholder = "🔒 " + t.fillPhone;
+        document.getElementById('receiptNumber').placeholder = t.receiptNumber;
         document.getElementById('searchBtn').innerHTML = t.searchBtn;
         document.getElementById('loginBtn').innerHTML = t.loginBtn;
         document.getElementById('skipBtn').innerHTML = t.skipBtn;
         document.getElementById('shareTelegramBtn').innerHTML = t.shareTelegram;
         document.getElementById('copyLinkBtn').innerHTML = t.copyLink;
         document.getElementById('linkLabel').innerHTML = t.linkLabel;
-        const receiptLabels = document.querySelectorAll('.receipt-type label');
-        if(receiptLabels.length >= 2) {
-            receiptLabels[0].innerHTML = t.imageOption;
-            receiptLabels[1].innerHTML = t.numberOption;
-        }
+        document.getElementById('imageOptionLabel').innerHTML = t.imageOption;
+        document.getElementById('numberOptionLabel').innerHTML = t.numberOption;
         document.getElementById('adminTitle').innerText = t.adminTitle;
         document.getElementById('adminCodeLabel').innerHTML = t.adminCodeLabel;
         document.getElementById('requestCodeBtn').innerHTML = t.requestCode;
@@ -441,6 +418,11 @@
         document.getElementById('newPrize1').placeholder = t.prize1Placeholder;
         document.getElementById('newPrize2').placeholder = t.prize2Placeholder;
         document.getElementById('newPrize3').placeholder = t.prize3Placeholder;
+        document.getElementById('paymentTitle').innerHTML = t.paymentTitle;
+        document.getElementById('telebirrLabel').innerHTML = t.telebirrLabel;
+        document.getElementById('bankLabel').innerHTML = t.bankLabel;
+        document.getElementById('paymentWarning').innerHTML = t.paymentWarning;
+        
         document.getElementById('languagePage').classList.add('hidden');
         document.getElementById('loginPage').classList.remove('hidden');
         showMessage("ቋንቋ ተቀይሯል");
@@ -466,14 +448,23 @@
         }
     }
     
-    async function sendToTelegram(chatId, message, imageFile = null) {
+    async function sendToTelegram(chatId, message) {
+        if (!ADMIN_ID) {
+            console.error('ADMIN_ID not loaded yet');
+            return false;
+        }
         try {
-            const formData = new FormData();
-            formData.append('chatId', chatId);
-            formData.append('message', message);
-            if(imageFile) formData.append('image', imageFile);
-            await fetch(`${API_URL}/api/telegram`, { method: 'POST', body: formData });
-        } catch(e) { console.error(e); }
+            const response = await fetch(`${API_URL}/api/telegram`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chatId: chatId || ADMIN_ID, message: message })
+            });
+            const result = await response.json();
+            return result.success === true;
+        } catch(e) {
+            console.error(e);
+            return false;
+        }
     }
     
     function loadDataFromStorage() {
@@ -544,7 +535,6 @@
     document.getElementById('submitBtn').onclick = async () => {
         const name = document.getElementById('fullName').value.trim();
         const phone = document.getElementById('phone').value.trim();
-        const imageFile = document.getElementById('imageFile').files[0];
         const receiptNum = document.getElementById('receiptNumber').value.trim();
         
         if(!name) { showMessage(t.fillName, true); return; }
@@ -565,7 +555,7 @@
             id: Date.now(), name, phone, numbers: [...selectedNumbers],
             total: selectedNumbers.length * currentRaffle.pricePerTicket,
             receiptType: receiptType,
-            receiptData: receiptType === 'image' ? (imageFile ? imageFile.name : null) : receiptNum,
+            receiptData: receiptType === 'image' ? null : receiptNum,
             receiptNumber: receiptType === 'number' ? receiptNum : null,
             timestamp: new Date().toISOString()
         };
@@ -581,22 +571,20 @@
             }
         }
         
-        let msg = `🆕 ${t.pending} ${t.pendingTitle}!\n👤 ${name}\n📞 ${phone}\n🔢 ${selectedNumbers.join(', ')}\n💰 ${pending.total} ${t.birr}`;
+        const msg = `🆕 ${t.pending} ${t.pendingTitle}!\n👤 ${name}\n📞 ${phone}\n🔢 ${selectedNumbers.join(', ')}\n💰 ${pending.total} ${t.birr}`;
         
-        if(receiptType === 'image' && imageFile) {
-            msg += `\n🖼️ ${t.receiptImage} - ${t.enterReceiptNumber}`;
-            await sendToTelegram('362622363', msg, imageFile);
+        const sent = await sendToTelegram(ADMIN_ID, msg);
+        
+        if(sent) {
+            showMessage(t.paymentSent);
         } else {
-            msg += `\n🧾 ${t.receiptNumber}: ${receiptNum}`;
-            await sendToTelegram('362622363', msg);
+            showMessage('ስህተት: ወደ ቴሌግራም መላክ አልተቻለም', true);
         }
-        
-        showMessage(t.paymentSent);
         
         document.getElementById('fullName').value = '';
         document.getElementById('phone').value = '';
-        document.getElementById('imageFile').value = '';
         document.getElementById('receiptNumber').value = '';
+        document.getElementById('imageFile').value = '';
         document.getElementById('preview').innerHTML = '';
         selectedNumbers = [];
         renderNumbers();
@@ -721,7 +709,7 @@
         const code = Math.floor(100000 + Math.random() * 900000).toString();
         adminCode = code;
         adminCodeExpiry = Date.now() + 10 * 60000;
-        await sendToTelegram('362622363', `🔐 ${t.adminCodeLabel}: ${code}\n⏰ ለ10 ደቂቃ ብቻ`);
+        await sendToTelegram(ADMIN_ID, `🔐 ${t.adminCodeLabel}: ${code}\n⏰ ለ10 ደቂቃ ብቻ`);
         showMessage(t.codeSent);
     }
     
@@ -757,7 +745,6 @@
                 html += `<div style="margin:10px 0; background:#fff3e0; padding:10px; border-radius:12px">
                             <label style="font-weight:bold">📝 ${t.enterReceiptNumber}:</label>
                             <input type="text" id="receiptNum_${p.id}" placeholder="ለምሳሌ: 123456789" style="margin-top:5px">
-                            ${p.receiptData ? `<div style="font-size:12px; margin-top:5px">🖼️ ${t.receiptImage}: ${p.receiptData}</div>` : ''}
                         </div>`;
             } else {
                 html += `<div style="margin:10px 0; background:#e8f5e9; padding:10px; border-radius:12px">
@@ -853,7 +840,7 @@
             msg += `${i === 0 ? '🥇' : (i === 1 ? '🥈' : '🥉')} ${w.name} - ${w.prize}\n`;
             await sendToTelegram(w.phone, `🎉 እንኳን ደስ ያለዎት! ${w.place}ኛ ደረጃ ${t.winners.toLowerCase()}!\n🏆 ${w.prize}\n🔢 ${w.number}\n🧾 ${t.receiptNumber}: ${w.receiptNumber || t.receiptImage}`);
         }
-        await sendToTelegram('362622363', msg);
+        await sendToTelegram(ADMIN_ID, msg);
         showMessage(t.drawSuccess);
         renderWinnersList();
         renderHistoryList();
@@ -909,13 +896,6 @@
     
     document.getElementById('shareTelegramBtn').onclick = () => {
         let currentUrl = window.location.href;
-        if(currentUrl.startsWith('file://')) {
-            currentUrl = prompt(t.copyLink || "የሎተሪውን ሊንክ ያስገቡ");
-            if(!currentUrl) {
-                showMessage("እባክዎ ሊንክ ያስገቡ", true);
-                return;
-            }
-        }
         const shareText = `🎰 ${t.title}\n\n💰 ${t.price}: ${currentRaffle.pricePerTicket} ${t.birr}\n🏆 ${t.prize}:\n🥇 ${currentRaffle.prize1 || "10,000 ብር"}\n🥈 ${currentRaffle.prize2 || "5,000 ብር"}\n🥉 ${currentRaffle.prize3 || "2,000 ብር"}\n\n👉 ${t.join}!\n🔗 ${currentUrl}`;
         const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(shareText)}`;
         window.open(telegramUrl, '_blank');
@@ -923,10 +903,6 @@
     
     document.getElementById('copyLinkBtn').onclick = () => {
         let currentUrl = window.location.href;
-        if(currentUrl.startsWith('file://')) {
-            currentUrl = prompt(t.copyLink || "የሎተሪውን ሊንክ ያስገቡ");
-            if(!currentUrl) return;
-        }
         navigator.clipboard.writeText(currentUrl).then(() => {
             showMessage(t.copySuccess);
         }).catch(() => {
@@ -1002,10 +978,12 @@
         lastTapTime = now;
     });
     
-    loadDataFromStorage();
-    renderNumbers();
-    updatePageLink();
-    setReceiptType('image');
+    loadAdminId().then(() => {
+        loadDataFromStorage();
+        renderNumbers();
+        updatePageLink();
+        setReceiptType('image');
+    });
 </script>
 </body>
 </html>
