@@ -7,6 +7,7 @@ app.use(express.static('public'));
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const ADMIN_ID = process.env.ADMIN_ID;
+const CHANNEL_ID = process.env.CHANNEL_ID;
 
 app.post('/api/telegram', async (req, res) => {
     try {
