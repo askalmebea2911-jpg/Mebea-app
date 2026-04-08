@@ -38,7 +38,7 @@ app.post('/api/telegram', async (req, res) => {
 });
 
 app.get('/api/config', (req, res) => {
-    res.json({ adminId: ADMIN_ID });
+    res.json({ adminId: ADMIN_ID, channelId: CHANNEL_ID });
 });
 
 app.get('/', (req, res) => {
@@ -48,4 +48,7 @@ app.get('/', (req, res) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`✅ Server running on port ${port}`);
+    console.log(`BOT_TOKEN is ${BOT_TOKEN ? 'SET' : 'NOT SET'}`);
+    console.log(`ADMIN_ID is ${ADMIN_ID ? 'SET' : 'NOT SET'}`);
+    console.log(`CHANNEL_ID is ${CHANNEL_ID ? 'SET' : 'NOT SET'}`);
 });
