@@ -233,6 +233,8 @@
 <script>
     const API_URL = window.location.origin;
     let ADMIN_ID = null;
+    let CHANNEL_ID = null;
+    let pendingInterval = null;
     
     let selectedNumbers = [];
     let currentRaffle = { totalNumbers: 100, pricePerTicket: 20, numbers: [], prizeImage: '' };
@@ -254,12 +256,13 @@
         const ethiopiaTime = new Date(now.getTime() + (3 * 60 * 60 * 1000));
         const timeString = ethiopiaTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         const dateString = ethiopiaTime.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        document.getElementById('timeDisplay').innerHTML = `🕒 ${dateString} | ${timeString} (ኢትዮጵያ)`;
+        const timeDisplay = document.getElementById('timeDisplay');
+        if(timeDisplay) timeDisplay.innerHTML = `🕒 ${dateString} | ${timeString} (ኢትዮጵያ)`;
     }
     setInterval(updateTime, 1000);
     updateTime();
     
-    // ============ ሙሉ የቋንቋ ትርጉም ከአለርቶች ጋር ============
+    // ============ የቋንቋ ትርጉም ============
     const translations = {
         am: {
             langTitle: "🌍 ቋንቋ ምረጡ", loginTitle: "🔐 ግቤት / ምዝገባ", title: "🎰 መብኣ ሎተሪ",
@@ -302,13 +305,11 @@
             phoneExists: "ይህ ስልክ ቁጥር አስቀድሞ ተመዝግቧል!",
             loginFailed: "ስልክ ቁጥር ወይም ሚስጥር ቁጥር ትክክል አይደለም!",
             welcomeBack: "እንኳን ደህና መጡ!",
-            // አለርት 1
+            channelPost: "✅ ክፍያ ተረጋገጠ!",
             alert1Title: "📝 እንኳን ደህና መጡ!",
             alert1Msg: "ለዚህ ሎተሪ መተግበሪያ አዲስ ከሆኑ\nእባክዎ ለመመዝገብ ስልክ ቁጥርዎን እና የራስዎን ሚስጥር ቁጥር ያስገቡ እና ተመዝገብ የሚለውን ቁልፍ ይጫኑ።\n\nይኼንን ማድረግ አስገዳጅ ባለመሆኑ ፍላጎት ከሌለዎ ያለምዝገባ ቀጥል የሚለውን ቁልፍ ይጫኑ።",
-            // አለርት 2
             alert2Title: "🎯 እንኳን ወደ መብኣ ሎተሪ በደህና መጡ!",
             alert2Msg: "1️⃣ ክፍያ ወደ ቴሌ ብር ወይም ንግድ ባንክ በመላክ ደረሰኝ ያዘጋጁ (በአንድ ጊዜ የሚቆርጡትን የእጣ ብዛት ድምር በአንድ ላይ ይክፈሉ)\n\n2️⃣ ቁጥር(ዎች) ይምረጡ (በአንድ ጊዜ መምረጥ የሚቻለው 10 እጢዎች ድረስ ብቻ ነው)\n\n3️⃣ ሙሉ ስምዎን ያስገቡ\n\n4️⃣ ደረሰኛ ቁጥር (ምስል) ያስገቡ",
-            // አለርት 3
             alert3Title: "✅ ደረሰኛዎ ተልኳል!",
             alert3Msg: "⏳ አስተዳዳሪው ክፍያዎን እስኪያረጋግጡ ይጠብቁ።\n\n✅ ክፍያዎ ሲረጋገጥ በቴሌግራም ቻናላችን ላይ ይፋ ይደረጋል።\n\n🏆 መልካም ዕድል!"
         },
@@ -353,6 +354,7 @@
             phoneExists: "This phone number is already registered!",
             loginFailed: "Invalid phone number or password!",
             welcomeBack: "Welcome back!",
+            channelPost: "✅ Payment confirmed!",
             alert1Title: "📝 Welcome!",
             alert1Msg: "If you are new to this lottery app\nPlease enter your phone number and your own password, then click the Register button.\n\nThis is not mandatory. If you don't want to register, click the Continue without login button.",
             alert2Title: "🎯 Welcome to Mebea Lottery!",
@@ -401,8 +403,9 @@
             phoneExists: "እዚ ቁጽሪ ተሌፎን ቀደም እውን ተመዝጊቡ ኣሎ!",
             loginFailed: "ቁጽሪ ተሌፎን ወይ ሚስጥር ቃል ጌጋ እዩ!",
             welcomeBack: "እንቋዕ ብደሓን መጻእካ!",
+            channelPost: "✅ ክፍሊት ተረጋጊጹ!",
             alert1Title: "📝 እንቋዕ ብደሓን መጻእካ!",
-            alert1Msg: "ንዚ ሎተሪ ኣፕሊኬሽን ሓድሽ እንተደኣኻ\nበጃኻ ቁጽሪ ተሌፎንካን ሚስጥር ቃልካን ኣእትው እሞ ናይ ምዝገባ ቁልፊ ጠውቕ\n\n�ዚ ግዴታ ስለዘይኰነ እንተዘይደሌኻ ብዘይምዝገባ ቀጽል ዘሎ ቁልፊ ጠውቕ",
+            alert1Msg: "ንዚ ሎተሪ ኣፕሊኬሽን ሓድሽ እንተደኣኻ\nበጃኻ ቁጽሪ ተሌፎንካን ሚስጥር ቃልካን ኣእትው እሞ ናይ ምዝገባ ቁልፊ ጠውቕ\n\nእዚ ግዴታ ስለዘይኰነ እንተዘይደሌኻ ብዘይምዝገባ ቀጽል ዘሎ ቁልፊ ጠውቕ",
             alert2Title: "🎯 እንቋዕ ናብ መብኣ ሎተሪ ብደሓን መጻእካ!",
             alert2Msg: "1️⃣ ክፍሊት ናብ ቴሌ ብር ወይ ንግድ ባንክ ብምላእ ደረሰኝ ዳልዉ (ብሓደ ግዜ ትገዝኦም ዘሎካ ቁጽሪ እጣ ብሓደ ኽፈሉ)\n\n2️⃣ ቁጽሪ ምረጹ (ብሓደ ግዜ ክትምርጹ ትኽእሉ 10 እጢታት ክሳብ ጥራይ እዩ)\n\n3️⃣ ምሉእ ስምኩም ኣእትዉ\n\n4️⃣ ቁጽሪ ደረሰኝ (ምስሊ) ኣእትዉ",
             alert3Title: "✅ ደረሰኝኩም ተላእኩ!",
@@ -449,6 +452,7 @@
             phoneExists: "Lakkoofsi bilbilaa kun duraan galmeeffameera!",
             loginFailed: "Lakkoofsi bilbilaa ykn jechi icciitii dogoggorsa!",
             welcomeBack: "Ani si duraan beeka!",
+            channelPost: "✅ Kaffaltiin mirkanaa'e!",
             alert1Title: "📝 Baggaa!",
             alert1Msg: "App lootirii kanaaf haaraa yoo taatan\nMaaloo lakkoofsa bilbilaa keessanii fi jecha icciitii keessan galchi, ergasii Galmaa'i jachu darbadhaa\n\nKun dirqama miti. Yoo hin barbaadne, Yoo hin galmeen itti fufi jachu darbadhaa",
             alert2Title: "🎯 Baggaa Mebea Lootirii!",
@@ -460,7 +464,6 @@
     
     let t = translations.am;
     
-    // አለርት ማሳያ ተግባር
     function showAlert(title, message) {
         alert(title + "\n\n" + message);
     }
@@ -470,9 +473,11 @@
             const response = await fetch('/api/config');
             const data = await response.json();
             ADMIN_ID = data.adminId;
+            CHANNEL_ID = data.channelId;
             console.log('ADMIN_ID loaded:', ADMIN_ID);
+            console.log('CHANNEL_ID loaded:', CHANNEL_ID);
         } catch(e) {
-            console.error('Failed to load ADMIN_ID:', e);
+            console.error('Failed to load config:', e);
         }
     }
     
@@ -534,7 +539,6 @@
         document.getElementById('languagePage').classList.add('hidden');
         document.getElementById('loginPage').classList.remove('hidden');
         
-        // አለርት 1 ማሳየት
         showAlert(t.alert1Title, t.alert1Msg);
         
         renderNumbers();
@@ -568,7 +572,7 @@
             const response = await fetch(`${API_URL}/api/telegram`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chatId: chatId || ADMIN_ID, message: message })
+                body: JSON.stringify({ chatId: chatId, message: message })
             });
             const result = await response.json();
             return result.success === true;
@@ -672,7 +676,6 @@
         document.getElementById('loginPage').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
         
-        // አለርት 2 ማሳየት
         showAlert(t.alert2Title, t.alert2Msg);
         
         renderNumbers();
@@ -703,7 +706,6 @@
         document.getElementById('loginPage').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
         
-        // አለርት 2 ማሳየት
         showAlert(t.alert2Title, t.alert2Msg);
         
         renderNumbers();
@@ -762,19 +764,12 @@
         
         if(receiptType === 'image' && imageFile) {
             msg += `\n🖼️ ${t.receiptImage}`;
-            // ምስል መላክ ከፈለጉ እዚህ ይጨምሩ
         } else {
             msg += `\n🧾 ${t.receiptNumber}: ${receiptNum}`;
         }
         
-        const sent = await sendToTelegram(ADMIN_ID, msg);
-        
-        if(sent) {
-            // አለርት 3 ማሳየት
-            showAlert(t.alert3Title, t.alert3Msg);
-        } else {
-            showMessage('ስህተት: ወደ ቴሌግራም መላክ አልተቻለም', true);
-        }
+        await sendToTelegram(ADMIN_ID, msg);
+        showAlert(t.alert3Title, t.alert3Msg);
         
         document.getElementById('fullName').value = '';
         document.getElementById('phone').value = '';
@@ -896,6 +891,42 @@
         container.innerHTML = html;
     }
     
+    function renderPendingList() {
+        const container = document.getElementById('pendingList');
+        if(!container) return;
+        
+        if(pendingReceipts.length === 0) {
+            container.innerHTML = `<div class="pending-card">${t.noResult || 'ምንም የተጠባባቂ ክፍያ የለም'}</div>`;
+            return;
+        }
+        
+        let html = '';
+        for(let i = 0; i < pendingReceipts.length; i++) {
+            const p = pendingReceipts[i];
+            html += `<div class="pending-card" id="pending-${p.id}">
+                <strong>👤 ${p.name || '?'}</strong> 📞 ${p.phone || '?'}<br>
+                🔢 ${p.numbers ? p.numbers.join(', ') : '?'}<br>
+                💰 ${p.total || 0} ${t.birr || 'ብር'}<br>`;
+            
+            if(p.receiptType === 'image') {
+                html += `<div style="margin:10px 0; background:#fff3e0; padding:10px; border-radius:12px">
+                            <label style="font-weight:bold">📝 ${t.enterReceiptNumber || 'የደረሰኝ ቁጥር'}:</label>
+                            <input type="text" id="receiptNum_${p.id}" placeholder="ለምሳሌ: 123456789" style="margin-top:5px">
+                            ${p.receiptData ? `<div style="font-size:12px; margin-top:5px">🖼️ ${t.receiptImage || 'ምስል'}: ${p.receiptData}</div>` : ''}
+                        </div>`;
+            } else {
+                html += `<div style="margin:10px 0; background:#e8f5e9; padding:10px; border-radius:12px">
+                            <strong>🧾 ${t.receiptNumber || 'ደረሰኝ ቁጥር'}:</strong> ${p.receiptData || '?'}
+                        </div>`;
+            }
+            
+            html += `<button onclick="confirmPayment(${p.id})" style="background:#10b981;margin:5px">${t.confirmBtn || '✅ አረጋግጥ'}</button>
+                     <button onclick="rejectPayment(${p.id})" style="background:#ef4444;margin:5px">${t.rejectBtn || '❌ ውድቅ አድርግ'}</button>
+            </div>`;
+        }
+        container.innerHTML = html;
+    }
+    
     function showAdminTab(tab) {
         document.getElementById('adminPendingContent').classList.add('hidden');
         document.getElementById('adminNewRaffleContent').classList.add('hidden');
@@ -906,6 +937,12 @@
             document.getElementById('adminPendingContent').classList.remove('hidden');
             tabs[0].classList.add('active');
             renderPendingList();
+            if(pendingInterval) clearInterval(pendingInterval);
+            pendingInterval = setInterval(() => {
+                if(adminLoggedIn && document.getElementById('adminPendingContent') && !document.getElementById('adminPendingContent').classList.contains('hidden')) {
+                    renderPendingList();
+                }
+            }, 5000);
         } else if(tab === 'newRaffle') {
             document.getElementById('adminNewRaffleContent').classList.remove('hidden');
             tabs[1].classList.add('active');
@@ -939,39 +976,7 @@
         }
     }
     
-    function renderPendingList() {
-        const container = document.getElementById('pendingList');
-        if(pendingReceipts.length === 0) {
-            container.innerHTML = `<div class="pending-card">${t.noResult}</div>`;
-            return;
-        }
-        let html = '';
-        for(let p of pendingReceipts) {
-            html += `<div class="pending-card" id="pending-${p.id}">
-                <strong>👤 ${p.name}</strong> 📞 ${p.phone}<br>
-                🔢 ${p.numbers.join(', ')}<br>
-                💰 ${p.total} ${t.birr}<br>`;
-            
-            if(p.receiptType === 'image') {
-                html += `<div style="margin:10px 0; background:#fff3e0; padding:10px; border-radius:12px">
-                            <label style="font-weight:bold">📝 ${t.enterReceiptNumber}:</label>
-                            <input type="text" id="receiptNum_${p.id}" placeholder="ለምሳሌ: 123456789" style="margin-top:5px">
-                            ${p.receiptData ? `<div style="font-size:12px; margin-top:5px">🖼️ ${t.receiptImage}: ${p.receiptData}</div>` : ''}
-                        </div>`;
-            } else {
-                html += `<div style="margin:10px 0; background:#e8f5e9; padding:10px; border-radius:12px">
-                            <strong>🧾 ${t.receiptNumber}:</strong> ${p.receiptData}
-                        </div>`;
-            }
-            
-            html += `<button onclick="confirmPayment(${p.id})" style="background:#10b981;margin:5px">${t.confirmBtn}</button>
-                     <button onclick="rejectPayment(${p.id})" style="background:#ef4444;margin:5px">${t.rejectBtn}</button>
-            </div>`;
-        }
-        container.innerHTML = html;
-    }
-    
-    window.confirmPayment = (id) => {
+    window.confirmPayment = async (id) => {
         const pending = pendingReceipts.find(p => p.id === id);
         if(!pending) return;
         
@@ -1013,11 +1018,17 @@
         renderPendingList();
         renderNumbers();
         addToAuditLog("ክፍያ ተረጋገጠ", `${pending.name} - ${pending.numbers.join(', ')} - 🧾 ${receiptNumber}`);
-        sendToTelegram(pending.phone, `✅ ${t.confirmed}: ${pending.name}\n🔢 ${pending.numbers.join(', ')}\n🧾 ${t.receiptNumber}: ${receiptNumber}`);
+        
+        await sendToTelegram(pending.phone, `✅ ${t.confirmed}: ${pending.name}\n🔢 ${pending.numbers.join(', ')}\n🧾 ${t.receiptNumber}: ${receiptNumber}`);
+        
+        if(CHANNEL_ID) {
+            await sendToTelegram(CHANNEL_ID, `${t.channelPost || '✅ ክፍያ ተረጋገጠ!'}\n👤 ${pending.name}\n🔢 ${pending.numbers.join(', ')}\n💰 ${pending.total} ${t.birr}\n🧾 ${receiptNumber}`);
+        }
+        
         saveDataToStorage();
     };
     
-    window.rejectPayment = (id) => {
+    window.rejectPayment = async (id) => {
         const pending = pendingReceipts.find(p => p.id === id);
         if(!pending) return;
         for(let num of pending.numbers) {
@@ -1033,7 +1044,7 @@
         renderPendingList();
         renderNumbers();
         addToAuditLog("ክፍያ ውድቅ ተደርጓል", `${pending.name} - ${pending.numbers.join(', ')}`);
-        sendToTelegram(pending.phone, `❌ ${t.rejected}: ${pending.name}`);
+        await sendToTelegram(pending.phone, `❌ ${t.rejected}: ${pending.name}`);
         saveDataToStorage();
     };
     
@@ -1060,6 +1071,9 @@
             await sendToTelegram(w.phone, `🎉 እንኳን ደስ ያለዎት! ${w.place}ኛ ደረጃ ${t.winners.toLowerCase()}!\n🏆 ${w.prize}\n🔢 ${w.number}\n🧾 ${t.receiptNumber}: ${w.receiptNumber || t.receiptImage}`);
         }
         await sendToTelegram(ADMIN_ID, msg);
+        if(CHANNEL_ID) {
+            await sendToTelegram(CHANNEL_ID, msg);
+        }
         showMessage(t.drawSuccess);
         renderWinnersList();
         renderHistoryList();
@@ -1153,17 +1167,17 @@
     document.getElementById('skipBtn').onclick = () => {
         document.getElementById('loginPage').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
-        
-        // አለርት 2 ማሳየት
         showAlert(t.alert2Title, t.alert2Msg);
-        
         renderNumbers();
         updatePageLink();
     };
     
     document.getElementById('requestCodeBtn').onclick = requestAdminCode;
     document.getElementById('verifyAdminBtn').onclick = verifyAdminCode;
-    document.getElementById('closeAdminBtn').onclick = () => document.getElementById('adminPanel').classList.add('hidden');
+    document.getElementById('closeAdminBtn').onclick = () => {
+        document.getElementById('adminPanel').classList.add('hidden');
+        if(pendingInterval) clearInterval(pendingInterval);
+    };
     
     document.getElementById('saveDataBtn').onclick = saveDataToStorage;
     document.getElementById('loadDataBtn').onclick = () => {
