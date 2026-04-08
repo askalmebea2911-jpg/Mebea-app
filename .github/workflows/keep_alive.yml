@@ -1,0 +1,13 @@
+name: Render Keep-Alive Ping
+
+on:
+  schedule:
+    - cron: '*/25 * * * *'
+
+jobs:
+  ping_service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send HTTP Request to Keep Service Alive
+        run: |
+          curl -s -o /dev/null https://mebea-app.onrender.com
