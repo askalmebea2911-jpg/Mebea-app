@@ -68,6 +68,10 @@
         .data-controls{display:flex;gap:10px;margin-top:15px}
         .data-controls button{flex:1;background:#6b7280;color:white}
         .payment-info{background:#ffd700;color:#1a472a;text-align:center;margin:15px 0;padding:15px;border-radius:16px}
+        .prize-image-upload{background:#f3f4f6;padding:15px;border-radius:16px;margin:15px 0}
+        .prize-image-upload label{font-weight:bold;display:block;margin-bottom:10px}
+        .prize-image-preview{max-width:200px;margin-top:10px;border-radius:12px}
+        .prize-display-img{max-width:100%;border-radius:16px;margin:15px 0;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
         @media(max-width:480px){.admin-cube{width:40px;height:40px}.face{width:40px;height:40px}.face.front{transform:translateZ(20px)}}
     </style>
 </head>
@@ -199,6 +203,15 @@
                 <input type="text" id="newPrize1" placeholder="1ኛ ሽልማት">
                 <input type="text" id="newPrize2" placeholder="2ኛ ሽልማት">
                 <input type="text" id="newPrize3" placeholder="3ኛ ሽልማት">
+                
+                <!-- የሽልማት ምስል ማስገቢያ (አማራጭ) -->
+                <div class="prize-image-upload">
+                    <label>🖼️ የሽልማት ማስታወቂያ ምስል</label>
+                    <input type="file" id="prizeImageFile" accept="image/*">
+                    <div id="prizeImagePreview"></div>
+                    <small style="color:#666; display:block; margin-top:8px;">※ አማራጭ ነው። ምስል ካላስገቡ ሽልማቱ ያለ ምስል ይታያል</small>
+                </div>
+                
                 <button id="createRaffleBtn">🚀 አዲስ እጣ ጀምር</button>
             </div>
             <div id="adminAuditContent" class="hidden">
@@ -220,7 +233,7 @@
     let ADMIN_ID = null;
     
     let selectedNumbers = [];
-    let currentRaffle = { totalNumbers: 100, pricePerTicket: 20, numbers: [] };
+    let currentRaffle = { totalNumbers: 100, pricePerTicket: 20, numbers: [], prizeImage: '' };
     let pendingReceipts = [];
     let allWinners = [];
     let raffleHistory = [];
@@ -718,6 +731,19 @@
         }
     });
     
+    // የሽልማት ምስል ቅድመ-እይታ
+    document.getElementById('prizeImageFile').addEventListener('change', function(e) {
+        if(e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = ev => {
+                document.getElementById('prizeImagePreview').innerHTML = `<img src="${ev.target.result}" class="prize-image-preview">`;
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        } else {
+            document.getElementById('prizeImagePreview').innerHTML = '';
+        }
+    });
+    
     function setReceiptType(type) {
         receiptType = type;
         const labels = document.querySelectorAll('.receipt-type label');
@@ -794,7 +820,14 @@
         }
         let html = '';
         for(let w of allWinners) {
-            html += `<div class="winner-card"><h3>🏆 ${t.winners} #${w.raffleId}</h3>`;
+            html += `<div class="winner-card">`;
+            
+            // የሽልማት ምስል ካለ አሳይ
+            if(currentRaffle.prizeImage && currentRaffle.prizeImage !== '') {
+                html += `<img src="${currentRaffle.prizeImage}" class="prize-display-img" alt="Prize Image">`;
+            }
+            
+            html += `<h3>🏆 ${t.winners} #${w.raffleId}</h3>`;
             for(let win of w.winners) {
                 html += `<div><strong>${win.place === 1 ? '🥇' : (win.place === 2 ? '🥈' : '🥉')} ${win.name}</strong> - ${win.prize}<br><small>🔢 ${t.selected}: ${win.number}</small>${win.receiptNumber ? `<br><small>🧾 ${t.receiptNumber}: ${win.receiptNumber}</small>` : ''}</div><br>`;
             }
@@ -981,13 +1014,28 @@
         const prize1 = document.getElementById('newPrize1').value;
         const prize2 = document.getElementById('newPrize2').value;
         const prize3 = document.getElementById('newPrize3').value;
+        const prizeImageFile = document.getElementById('prizeImageFile').files[0];
+        
         if(!total || !price || !prize1 || !prize2 || !prize3) {
             showMessage("ሁሉንም መስኮች ይሙሉ", true);
             return;
         }
+        
+        if(prizeImageFile) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                createRaffleWithImage(total, price, prize1, prize2, prize3, e.target.result);
+            };
+            reader.readAsDataURL(prizeImageFile);
+        } else {
+            createRaffleWithImage(total, price, prize1, prize2, prize3, '');
+        }
+    };
+    
+    function createRaffleWithImage(total, price, prize1, prize2, prize3, prizeImage) {
         currentRaffle = {
             id: Date.now(), totalNumbers: total, pricePerTicket: price,
-            prize1, prize2, prize3,
+            prize1, prize2, prize3, prizeImage: prizeImage,
             numbers: Array(total).fill().map((_, i) => ({ number: i+1, status: 'available', user: null, phone: null })),
             status: 'active', startTime: new Date().toISOString()
         };
@@ -998,7 +1046,11 @@
         addToAuditLog("አዲስ እጣ ተፈጠረ", `1-${total}, ${price} ${t.birr}`);
         showAdminTab('pending');
         saveDataToStorage();
-    };
+        
+        // የምስል መስኩን አጽዳ
+        document.getElementById('prizeImageFile').value = '';
+        document.getElementById('prizeImagePreview').innerHTML = '';
+    }
     
     function addToAuditLog(action, details) {
         auditLog.unshift({ id: Date.now(), action, details, timestamp: new Date().toISOString(), admin: "Admin" });
