@@ -250,7 +250,6 @@
     let adminLoggedIn = false;
     let registeredReceiptNumbers = [];
     
-    // ሰዓት ማሳያ (ከ3 ሰአት ጋር)
     function updateTime() {
         const now = new Date();
         const ethiopiaTime = new Date(now.getTime() + (3 * 60 * 60 * 1000));
@@ -262,7 +261,6 @@
     setInterval(updateTime, 1000);
     updateTime();
     
-    // ============ የቋንቋ ትርጉም ============
     const translations = {
         am: {
             langTitle: "🌍 ቋንቋ ምረጡ", loginTitle: "🔐 ግቤት / ምዝገባ", title: "🎰 መብኣ ሎተሪ",
@@ -563,7 +561,6 @@
         }
     }
     
-    // ============ የተሻሻለው sendToTelegram (ምስል መላክ ይችላል) ============
     async function sendToTelegram(chatId, message, imageFile = null) {
         if (!ADMIN_ID) {
             console.error('ADMIN_ID not loaded yet');
@@ -727,7 +724,6 @@
         levelDiv.innerHTML = `${t.userLevel}: <strong>${levelName}</strong> | ${t.totalSpent}: ${currentUser.totalSpent} ${t.birr}`;
     }
     
-    // ============ የተሻሻለው submitBtn (ምስሉን ወደ sendToTelegram ያልካል) ============
     document.getElementById('submitBtn').onclick = async () => {
         const name = document.getElementById('fullName').value.trim();
         const phone = document.getElementById('phone').value.trim();
@@ -776,7 +772,6 @@
             msg += `\n🧾 ${t.receiptNumber}: ${receiptNum}`;
         }
         
-        // ምስሉን እንደ ሶስተኛ ፓራሜትር ያስገቡ
         await sendToTelegram(ADMIN_ID, msg, imageFile);
         showAlert(t.alert3Title, t.alert3Msg);
         
