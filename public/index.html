@@ -563,16 +563,23 @@
         }
     }
     
-    async function sendToTelegram(chatId, message) {
+    // ============ የተሻሻለው sendToTelegram (ምስል መላክ ይችላል) ============
+    async function sendToTelegram(chatId, message, imageFile = null) {
         if (!ADMIN_ID) {
             console.error('ADMIN_ID not loaded yet');
             return false;
         }
         try {
+            const formData = new FormData();
+            formData.append('chatId', chatId);
+            formData.append('message', message);
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+            
             const response = await fetch(`${API_URL}/api/telegram`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chatId: chatId, message: message })
+                body: formData
             });
             const result = await response.json();
             return result.success === true;
@@ -720,6 +727,7 @@
         levelDiv.innerHTML = `${t.userLevel}: <strong>${levelName}</strong> | ${t.totalSpent}: ${currentUser.totalSpent} ${t.birr}`;
     }
     
+    // ============ የተሻሻለው submitBtn (ምስሉን ወደ sendToTelegram ያልካል) ============
     document.getElementById('submitBtn').onclick = async () => {
         const name = document.getElementById('fullName').value.trim();
         const phone = document.getElementById('phone').value.trim();
@@ -768,7 +776,8 @@
             msg += `\n🧾 ${t.receiptNumber}: ${receiptNum}`;
         }
         
-        await sendToTelegram(ADMIN_ID, msg);
+        // ምስሉን እንደ ሶስተኛ ፓራሜትር ያስገቡ
+        await sendToTelegram(ADMIN_ID, msg, imageFile);
         showAlert(t.alert3Title, t.alert3Msg);
         
         document.getElementById('fullName').value = '';
